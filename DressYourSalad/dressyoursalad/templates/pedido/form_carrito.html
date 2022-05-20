@@ -17,6 +17,7 @@
       <span class="navbar-toggler-icon"></span>
       </button>      
       {% load static %}
+      
       <!-- insertar logo -->            
       <a class="navbar-brand " href="#">
         <img src="{% static 'img/logo.jpg'%}" width="60" height="60" alt="">
@@ -27,56 +28,66 @@
             <h3 style="text-align: center">DressYourSalad</h3>
           </li>          
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Modificar Pedidos pagados</a>
-          </li>
-               
+            <a class="nav-link" href="{% url 'index' %}">Volver a Pagina principal</a>
+          </li>               
         </ul>  
       </div>
-        <!-- insertar botones -->     
+        <!-- insertar botones --> 
+        
   </nav>           
     <!-- fin navbar -->      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Mostrando Bowls</h3>
+        <h3>Mostrando Carrito</h3>
         <div class="linea"></div>
     <div class="container">
     <table class="table">
         <thead>
             <tr>
-              
-                <th scope="col">Código</th>
-                <th scope="col">Nombre</th>
+                <th scope="col">Código pedido</th>
+                <th scope="col">Bowl</th>
+                <th scope="col">Cantidad</th>
                 <th scope="col">Precio</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Stock Disponible</th>
-          
-
+                <th scope="col">Total a Pagar</th>
             </tr>
         </thead>
         <tbody>
-            {%for bo in bowls%}
+            {% load mathfilters %}
+            
                 <tr>
-                    <td>{{bo.cod_Bowl}}</td>
-                    <td>{{bo.nom_Bowl}}</td>
-                    <td>{{bo.precio_Bowl}}</td>
-                    <td>{{bo.descripcion_Bowl}}</td>
-                    <td>{{bo.cant_Bowl}}</td>
-                
-                    <td><a href="{% url 'form_modificar' bo.cod_Bowl%}" class="btn btn-primary" id="btnprueba">Modificar  </a></td>
-                    
+                    <td>{{pedidos.cod_ped}}</td>
+                    <td>{{pedidos.bowl.nom_Bowl}}</td>
+                    <td>{{pedidos.cantidad}}</td>
+                    <td>{{pedidos.bowl.precio_Bowl}}</td>
+                    <td>{{pedidos.bowl.precio_Bowl|mul:pedidos.cantidad}}</td>
+                    <td><a href="{% url 'pago' %}" class="btn btn-danger" id="btnprueba">Pagar Pedido</a>
+                    <a href="{% url 'form_eliminar_carrito' pedidos.cod_ped%}" class="btn btn-danger" id="btnprueba">Eliminar Pedido</a></td>
                 </tr>
-            {%endfor%}
-
-        </tbody>
-
-    </table>
-    <a href="{% url 'form_crear' %}" class="btn btn-primary" id="btnprueba">Agregar Nuevo Bowl</a>
+            
+        </tbody>        
+      </table>
     <br><br><br>
+
+
     </div>
-    
+
+        <br><br><br><br><br><br>   
+        <br><br><br><br><br><br> <br>
+
+
+
+    <footer class= "container-fluid footer" >
+      <p>Encuentranos en Pajaritos #1021, Plaza de Maipú  
+      </p>           
+      <p>Síguenos: 
+        <i class="fa fa-whatsapp"></i>
+        <i class="fa fa-facebook"></i>
+        <i class="fa fa-envelope"></i> 
+        <i class="fa fa-instagram"></i> 
+        <i class="fa fa-twitter"></i> 
+      </p>
+      <p>©2022 Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados </p>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

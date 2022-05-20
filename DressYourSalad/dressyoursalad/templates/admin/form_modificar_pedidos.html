@@ -27,35 +27,31 @@
           <h3 style="text-align: center">DressYourSalad</h3>
         </li>          
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'index' %}">Volver a la página principal</a>
+          <a class="nav-link" href="{% url 'index' %}">Menú</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'form_ver' %}">Carrito</a>
+          <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Carrito</a>
         </li>                 
       </ul>  
     </div>
       <!-- insertar botones --> 
-    <div>
-      <a href="" button type="button" class="btn btn-primary" id="btnprueba">Iniciar Sesión</button></a>
-      <a href="" button type="button" class="btn btn-primary" id="btnprueba">Regístrate</button></a>
-    </div>      
+      
 </nav>      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Modificando Pedido</h3>
+        <h3>Modificando Estado de Pedido</h3>
         <div class="linea"></div>
     <div class="container">
         <div class="row">
                 <form method="POST" action="#" id="formulario">
-                    {%csrf_token%}
-                    <div class="form-group">
-                    {{form.as_table}}
-                    </div>
+                  {%csrf_token%}
+                  <div class="form-group">
+                  {{form.as_table}}
+                  </div>              
                 
-                
-                        <div class="form-group">
-                         <input type="submit" class="btn btn-danger" id="btnprueba" value="Modificar">
-                    </div>
+                  <div class="form-group">
+                  <input type="submit" class="btn btn-danger" id="btnprueba" value="Modificar">
+                   </div>
                 </form>
         </div>
     </div>

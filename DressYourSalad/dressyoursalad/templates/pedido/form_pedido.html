@@ -16,36 +16,22 @@
         {
           $("formulario").validate({
                rules: {                
-                    cod_Bowl: "required",
-                    nom_Bowl: "required",
-                    precio_Bowl: "required",
-                    descripcion_Bowl: "required",
-                    cant_Bowl: "required",
-                    estado_stock: "required",
+                    bowl: "required",  
+                    cantidad: "required",
+                                      
                       },   
                       
                  messages: 
                   {
-                    cod_Bowl: {
-                      required: 'Ingresa codigo del producto',
+                    bowl:{
+                        required: 'Seleccione un bowl',                      
                     },
-                    nom_Bowl: {
-                      required: 'Ingresa nombre producto',
-                  },
-                  precio_Bowl:{
-                      required: 'Ingrese Precio',                      
-                  },
-                  descripcion_Bowl:{
-                      required: 'Ingrese descripcion',
-                  },
-                  cant_Bowl:{
-                      required: 'Ingrese cantidad de productos',
-                  },
-                  estado_stock:{
-                      required: 'Ingrese estado de stock',
-                  },
-                   
-              }//messages
+                    cantidad: {
+                      required: 'Ingresa cantidad',
+                    },
+                    
+                                       
+                  }//messages
           }); //$('#formulario').validate
       }); //function
 </script>
@@ -66,49 +52,76 @@
               <h3 style="text-align: center">DressYourSalad</h3>
             </li>          
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'index' %}">Ir a página principal</a>
-            </li>            
+              <a class="nav-link" href="{% url 'index' %}">Volver a Pagina principal</a>
+            </li>  
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+            </li>              
           </ul>  
         </div>
           <!-- insertar botones --> 
-        <div>
-          <a href="" button type="button" class="btn btn-primary" id="btnprueba">Iniciar Sesión</button></a>
-          <a href="" button type="button" class="btn btn-primary" id="btnprueba">Regístrate</button></a>
-        </div>      
+           
     </nav>      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Creando Productos</h3>
+        <h3>Realiza tu Pedido</h3>
     <div class="linea"></div>
+
+    <br>
+ <div class="contenedor-imagenes">
+  <div class="imagen">
+      <img src="{% static 'img/icono1.jpg'%}" alt="">
+      <div class="overlay">
+          <h2><strong>Ensalada 1</strong></h2>
+          <p>Descripcion ensalada</p>
+      </div>
+  </div>
+  
+  <div class="imagen">
+      <img src="{% static 'img/icono2.jpg'%}" alt="">
+      <div class="overlay">
+          <h2><strong>Ensalada 2</strong></h2>
+          <p>DEscripcion ensalada</p>
+      </div>
+  </div>
+</div>
+  <div class="contenedor-imagenes">
+  <div class="imagen">
+      <img src="{% static 'img/icono3.jpg'%}" alt="">
+      <div class="overlay">
+          <h2><strong>Ensalada 3</strong></h2>
+          <p>Descripcion ensalada</p>
+      </div>
+  </div>
+  <div class="imagen">
+    <img src="{% static 'img/icono4.jpg'%}" alt="">
+    <div class="overlay">
+        <h2><strong>Ensalada 4</strong></h2>
+        <p>Descripcion ensalada</p>
+    </div>
+  </div> 
+</div>
+  <br>
+    <!-- agregar modelos en form, path en urls, views-->
     <div class="container">
         <div class="row">
             <div class="row">
                 <form method="POST" action="#" id="formulario">
                     {%csrf_token%}
+                    
                     <div class="form-group">
-                        {{bowl_form.cod_Bowl.label}}
-                        {{bowl_form.cod_Bowl}}
+                      {{ped_form.bowl.label}}
+                      {{ped_form.bowl}}
                     </div>
                     <div class="form-group">
-                        {{bowl_form.nom_Bowl.label}}
-                        {{bowl_form.nom_Bowl}}
+                      {{ped_form.cantidad.label}}
+                      {{ped_form.cantidad}}
+                      {% if error %}
+                        Cantidad ingresada supera al stock.
+                      {% endif %}
                     </div>
-                    <div class="form-group">
-                        {{bowl_form.precio_Bowl.label}}
-                        {{bowl_form.precio_Bowl}}
-                    </div>
-                    <div class="form-group">
-                        {{bowl_form.descripcion_Bowl.label}}
-                        {{bowl_form.descripcion_Bowl}}
-                    </div>
-                    <div class="form-group">
-                        {{bowl_form.cant_Bowl.label}}
-                        {{bowl_form.cant_Bowl}}
-                    </div>
-                    <div class="form-group">
-                        {{bowl_form.estado_stock.label}}
-                        {{bowl_form.estado_stock}}
-                    </div>
+                    <br>
+                    </select>
                     <div class="form-group">
                          <input type="submit" class="btn btn-danger" id="btnprueba" value="Enviar">
                         <input type="reset" class="btn btn-primary" id="btnprueba" value="Limpiar">
@@ -117,6 +130,9 @@
                 </div>
             </div>
         </div>
+        
+
+        
         <br><br><br>
         <footer class= "container-fluid footer" >
             <p>Encuentranos en Pajaritos #1021, Plaza de Maipú  

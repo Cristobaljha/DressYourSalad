@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dressyoursalad',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -130,5 +131,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL='form_ver'
+LOGIN_REDIRECT_URL='index'
+
 LOGOUT_REDIRECT_URL='index'
+
+

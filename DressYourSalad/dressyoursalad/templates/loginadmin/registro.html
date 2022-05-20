@@ -1,4 +1,4 @@
-{% extends 'logincli/layout.html' %}
+{% extends 'loginadmin/layout.html' %}
 
 {% block content %}
 
@@ -6,7 +6,9 @@
 	{% csrf_token %}
 	{{ form.as_p }}
 
-	<button type="submit" id="submit">Login</button>
+	<button type="submit" id="submit">Registrarse</button>
 </form>
+
+
 
 {% endblock %}

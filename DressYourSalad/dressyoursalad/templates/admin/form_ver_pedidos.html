@@ -17,6 +17,7 @@
       <span class="navbar-toggler-icon"></span>
       </button>      
       {% load static %}
+      
       <!-- insertar logo -->            
       <a class="navbar-brand " href="#">
         <img src="{% static 'img/logo.jpg'%}" width="60" height="60" alt="">
@@ -30,52 +31,71 @@
             <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Modificar Pedidos pagados</a>
+            <a class="nav-link" href="{% url 'form_ver' %}">Modificar Bowls</a>
           </li>
-               
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+          </li>                 
         </ul>  
       </div>
-        <!-- insertar botones -->     
+        <!-- insertar botones --> 
+      
   </nav>           
     <!-- fin navbar -->      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Mostrando Bowls</h3>
+        <h3>Estado de Pedidos realizados</h3>
         <div class="linea"></div>
     <div class="container">
     <table class="table">
         <thead>
             <tr>
-              
-                <th scope="col">Código</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Descripción</th>
-                <th scope="col">Stock Disponible</th>
-          
-
+                <th scope="col">Código Pedido</th>
+                <th scope="col">Fecha_ped</th>
+                <th scope="col">Bowl</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio unitario</th>
+                <th scope="col">Total a pagar</th>
+                <th scope="col">Estado de Pago</th>
+                
             </tr>
         </thead>
         <tbody>
-            {%for bo in bowls%}
+            {% load mathfilters %}
+            {%for pedido in pedidos%}
                 <tr>
-                    <td>{{bo.cod_Bowl}}</td>
-                    <td>{{bo.nom_Bowl}}</td>
-                    <td>{{bo.precio_Bowl}}</td>
-                    <td>{{bo.descripcion_Bowl}}</td>
-                    <td>{{bo.cant_Bowl}}</td>
-                
-                    <td><a href="{% url 'form_modificar' bo.cod_Bowl%}" class="btn btn-primary" id="btnprueba">Modificar  </a></td>
-                    
+                    <td>{{pedido.cod_ped}}</td>
+                    <td>{{pedido.fecha_ped}}</td>
+                    <td>{{pedido.bowl.nom_Bowl}}</td>
+                    <td>{{pedido.cantidad}}</td>
+                    <td>{{pedido.bowl.precio_Bowl}}</td>
+                    <td>{{pedido.bowl.precio_Bowl|mul:pedido.cantidad}}</td>
+                    <td>
+                      {% if pedido.pagado %}
+                         Pagado
+                      {% else %}
+                        No pagado
+                      {% endif %}
+                    </td>
+                    <td><a href="{% url 'form_modificar_pedidos' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Actualizar</a></td>
                 </tr>
             {%endfor%}
-
-        </tbody>
-
-    </table>
-    <a href="{% url 'form_crear' %}" class="btn btn-primary" id="btnprueba">Agregar Nuevo Bowl</a>
-    <br><br><br>
+        </tbody>        
+      </table>
+    
     </div>
+
+
+   
+      
+
+
+
+
+  
+
+
+
     
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
