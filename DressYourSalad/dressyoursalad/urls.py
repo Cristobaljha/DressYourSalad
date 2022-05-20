@@ -15,9 +15,8 @@ urlpatterns = [
     path('form_modificar/<id>', form_modificar, name="form_modificar"),
     path('form_eliminar/<id>', form_eliminar, name="form_eliminar"),
     path('registro', registro, name="registro"),
-    # path('login', login, name="login"),
     path('accounts/login/', LoginView.as_view(template_name='logincli/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='logincli/logout.html'), name='logout'),
-    # path('logout/',login_required(logout),name = 'logout'),
+    
 
 ]
