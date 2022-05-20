@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .models import Bowl 
 from .forms import BowlForm
+from  .forms import UserRegisterForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -14,8 +16,9 @@ def carrito(request):
     datos ={
         'bowls': bowls
     }
-    
+   
     return render(request, 'carrito.html', datos)
+    
 
 
 
@@ -63,12 +66,25 @@ def form_eliminar(request,id):
     return redirect('form_ver')
 
 
+# def registro(request):
+
+#     return render(request, 'logincli/registro.html')
+
 def registro(request):
+	if request.method == 'POST':
+		form = UserRegisterForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data['username']
+			messages.success(request, f'Usuario {username} creado')
+			return redirect('index')
+	else:
+		form = UserRegisterForm()
 
-    return render(request, 'logincli/registro.html')
+	context = { 'form' : form } 
+	return render(request, 'logincli/registro.html', context)
 
 
+# def login(request):
 
-def login(request):
-
-    return render(request, 'logincli/login.html')
+#     return render(request, 'logincli/login.html')

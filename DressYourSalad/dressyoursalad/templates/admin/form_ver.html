@@ -31,14 +31,17 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'carrito' %}">Carrito</a>
+          </li>   
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
           </li>                 
         </ul>  
       </div>
         <!-- insertar botones --> 
-      <div>
+      <!-- <div>
         <a href="" button type="button" class="btn btn-primary" id="btnprueba">Iniciar Sesión</button></a>
         <a href="" button type="button" class="btn btn-primary" id="btnprueba">Regístrate</button></a>
-      </div>      
+      </div>       -->
   </nav>           
     <!-- fin navbar -->      
     <br><br><br><br>
@@ -79,6 +82,8 @@
     <a href="{% url 'form_crear' %}" class="btn btn-primary" id="btnprueba">Nuevo Bowl</a>
     <br><br><br>
     </div>
+
+    <br><br><br><br><br><br><br>
     <footer class= "container-fluid footer" >
       <p>Encuentranos en Pajaritos #1021, Plaza de Maipú  
       </p>           
