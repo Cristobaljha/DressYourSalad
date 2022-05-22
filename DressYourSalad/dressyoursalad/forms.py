@@ -81,10 +81,11 @@ class ModificarPedidoForm(forms.ModelForm):
     
     class Meta:
         model = Pedido
-        fields = ['pagado']
+        fields = ['pagado','entregado']
         labels ={       
         
-            'pagado': 'No pagado: False - Pagado: True' 
+            'pagado': 'No pagado: False - Pagado: True',
+            'entregado': 'No Entregado: False - Entregado: True' 
         }           
         
         widgets={
@@ -93,6 +94,12 @@ class ModificarPedidoForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control', 
                     'id': 'pagado',
+                }
+            ),
+            'entregado': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 
+                    'id': 'entregado',
                 }
             )
         }

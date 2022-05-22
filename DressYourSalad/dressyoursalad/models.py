@@ -22,6 +22,7 @@ class Pedido (models.Model):
     fecha_ped = models.DateTimeField(default=datetime.now, editable=False)
     cantidad = models.CharField(max_length=25,verbose_name='Cantidad Bowl')
     pagado=models.BooleanField(default=False)
+    entregado=models.BooleanField(default=False)
     bowl=models.ForeignKey(Bowl, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
 

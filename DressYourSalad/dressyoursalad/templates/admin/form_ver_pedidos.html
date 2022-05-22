@@ -57,6 +57,7 @@
                 <th scope="col">Precio unitario</th>
                 <th scope="col">Total a pagar</th>
                 <th scope="col">Estado de Pago</th>
+                <th scope="col">Estado de Entrega</th>
                 
             </tr>
         </thead>
@@ -75,6 +76,13 @@
                          Pagado
                       {% else %}
                         No pagado
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% if pedido.entregado %}
+                         Entregado
+                      {% else %}
+                        No entregado
                       {% endif %}
                     </td>
                     <td><a href="{% url 'form_modificar_pedidos' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Actualizar</a></td>
