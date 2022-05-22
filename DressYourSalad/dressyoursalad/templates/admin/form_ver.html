@@ -65,8 +65,8 @@
                     <td>{{bo.descripcion_Bowl}}</td>
                     <td>{{bo.cant_Bowl}}</td>
                 
-                    <td><a href="{% url 'form_modificar' bo.cod_Bowl%}" class="btn btn-primary" id="btnprueba">Modificar  </a></td>
-                    
+                    <td><a href="{% url 'form_modificar' bo.cod_Bowl%}" class="btn btn-primary" id="btnprueba">Modificar  </a>
+                    <a href="{% url 'form_eliminar' bo.cod_Bowl%}" class="btn btn-danger" id="btnprueba">Eliminar </a></td>
                 </tr>
             {%endfor%}
 

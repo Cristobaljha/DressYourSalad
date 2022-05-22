@@ -1,23 +1,26 @@
 /*estilo botones nav*/
 
+ 
+
+
 
 
 #btnprueba{
-    background-color: #8D5132;
-    border-color: #8D5132;
+    background-color: #33a111;
+    border-color: #9acd32
 }
 #btnprueba:hover{
-    background-color: #A96644;
+    background-color: #9acd32;
 }
 
 #btnprueba2{
-    background-color: #8D5132;
-    border-color: #8D5132;
+    background-color: #9acd32;
+    border-color: #9acd32;
     color: #ffffff;
 }
 
 #btnprueba2:hover{
-    background-color: #A96644;
+    background-color: #9acd32;
 }
 
 .imagen {
@@ -29,17 +32,17 @@
 }
 
 
-.footer {
+/* .footer {
     position:relative;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #8D5132;
-    color: #ffffff;
+    background-color: #9acd32;
+    color: #000000;
     text-align: center;
     padding-top: 10px;
     padding-bottom:5px;
-}
+} */
 
 /* estilos de titulos*/
 
@@ -78,8 +81,9 @@ h3 {
     font-size:  x-large;
 }
 
+
 .linea{
-    border-top: 5px solid #8D5132;
+    border-top: 5px solid #9acd32 ;
     margin-bottom: 40px;
 }
 
@@ -193,3 +197,116 @@ h3 {
 
 
 /* fin de page registro*/
+
+
+
+/* -------------------comienzo fotter------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+/*:::::Pie de Pagina*/
+.pie-pagina{
+    width: 100%;
+    /* background-color: #0a141d; */
+    background-color: #008000;
+}
+.pie-pagina .grupo-1{
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap:50px;
+    padding: 45px 0px;
+}
+.pie-pagina .grupo-1 .box figure{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pie-pagina .grupo-1 .box figure img{
+    width: 250px;
+}
+.pie-pagina .grupo-1 .box h2{
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+.pie-pagina .grupo-1 .box p{
+    color: #efefef;
+    margin-bottom: 10px;
+}
+.pie-pagina .grupo-1 .red-social a{
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: #000000;
+    margin-right: 10px;
+    /* background-color: #0d2033; */
+    background-color: #9acd32;
+    text-align: center;
+    transition: all 300ms ease;
+}
+.pie-pagina .grupo-1 .red-social a:hover{
+    color: #a0522d;
+}
+.pie-pagina .grupo-2{
+    background-color: #9acd32;
+    padding: 15px 10px;
+    text-align: center;
+    color: #fff;
+}
+.pie-pagina .grupo-2 small{
+    font-size: 15px;
+}
+@media screen and (max-width:800px){
+    .pie-pagina .grupo-1{
+        width: 90%;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap:30px;
+        padding: 35px 0px;
+    }
+}
+
+
+
+/* para dar forma del logo de la empesa en el footer */
+#borde{
+    border-radius: 15px 50px;
+    background: #9acd32;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+  }
+  
+  
+  /* para justificar el texto del footer */
+  .textojustificado{
+      text-align: justify;
+      font-weight: 500;
+  }
+  
+  
+
+  /* nombre de nuestra empresa */
+  #nombreEmpresa {
+   border-radius: 20%;
+    }
+
+.relleno{
+    font-weight: 900;
+}
+
+/*-------------------------------- fin footer *----------------------------------/
+
+
+

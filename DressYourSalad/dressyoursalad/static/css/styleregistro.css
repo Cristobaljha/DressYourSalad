@@ -4,12 +4,6 @@ body{
 	font-family: 'Varela Round', Helvetica, Arial, serif;
 }
 /* Global Styles*/
-h1{
-
-}
-
-h2{
-}
 
 h5{
 	font-size: 1rem;
@@ -292,3 +286,7 @@ img.profile{
   }
 
 }
+
+/* .colorboton{
+  background-color: #9acd32;
+} */

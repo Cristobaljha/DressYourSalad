@@ -44,18 +44,18 @@
     <!-- fin navbar -->      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Estado de Pedidos realizados</h3>
+        <h3>Estado de Pedidos Realizados</h3>
         <div class="linea"></div>
     <div class="container">
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Código Pedido</th>
-                <th scope="col">Fecha_ped</th>
+                <th scope="col">Fecha Pedido</th>
                 <th scope="col">Bowl</th>
                 <th scope="col">Cantidad</th>
-                <th scope="col">Precio unitario</th>
-                <th scope="col">Total a pagar</th>
+                <th scope="col">Precio Unitario</th>
+                <th scope="col">Total a Pagar</th>
                 <th scope="col">Estado de Pago</th>
                 <th scope="col">Estado de Entrega</th>
                 
@@ -75,17 +75,17 @@
                       {% if pedido.pagado %}
                          Pagado
                       {% else %}
-                        No pagado
+                        <a href="{% url 'form_pagado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Pagado</a>
                       {% endif %}
                     </td>
                     <td>
                       {% if pedido.entregado %}
                          Entregado
                       {% else %}
-                        No entregado
+                        <a href="{% url 'form_entregado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Entregado</a>
                       {% endif %}
                     </td>
-                    <td><a href="{% url 'form_modificar_pedidos' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Actualizar</a></td>
+                    <td><a href="{% url 'form_modificar_pedidos' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Editar Estados</a></td>
                 </tr>
             {%endfor%}
         </tbody>        

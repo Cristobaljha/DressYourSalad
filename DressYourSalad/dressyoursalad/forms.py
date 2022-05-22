@@ -76,7 +76,6 @@ class PedidoForm(forms.ModelForm):
 
         }
 
-
 class ModificarPedidoForm(forms.ModelForm):
     
     class Meta:
@@ -86,7 +85,7 @@ class ModificarPedidoForm(forms.ModelForm):
         
             'pagado': 'No pagado: False - Pagado: True',
             'entregado': 'No Entregado: False - Entregado: True' 
-        }           
+        }         
         
         widgets={
             
@@ -96,7 +95,7 @@ class ModificarPedidoForm(forms.ModelForm):
                     'id': 'pagado',
                 }
             ),
-            'entregado': forms.TextInput(
+            'entregado':forms.TextInput(
                 attrs={
                     'class': 'form-control', 
                     'id': 'entregado',

@@ -3,6 +3,9 @@ from .models import Bowl, Pedido
 from .forms import BowlForm, PedidoForm, UserRegisterForm, ModificarPedidoForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from dressyoursalad.utils import render_to_pdf
+from django.views.generic import ListView, View
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -51,7 +54,10 @@ def form_modificar(request,id):
             return redirect('form_ver')
     return render(request, 'admin/form_modificar.html', datos)
 
-
+def form_eliminar(request,id):
+    bowl = Bowl.objects.get(cod_Bowl=id)
+    bowl.delete()
+    return redirect('form_ver')
 
 def form_pedido(request):
     if request.method=='POST':
@@ -73,14 +79,25 @@ def form_pedido(request):
                 return redirect('form_carrito')
     else:
         ped_form=PedidoForm()
-        user = User.objects.get(username=request.user)
-        return render(request, 'pedido/form_pedido.html', {'ped_form':ped_form, 'user':user, 'error':False})
+        try:
+            user = User.objects.get(username=request.user)
+            if not user.is_superuser:
+                return render(request, 'pedido/form_pedido.html', {'ped_form':ped_form, 'user':user, 'error':False})
+            else:
+                return render(request, 'index.html')
+        except:
+            return redirect('accounts/login')
 
     
 def form_carrito(request):
     #pedidos = Pedido.objects.select_related().all()
     pedidos =  Pedido.objects.select_related().latest('fecha_ped')
     return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
+
+def pago(request):
+    #pedidos = Pedido.objects.select_related().all()
+    pedidos =  Pedido.objects.select_related().latest('fecha_ped')
+    return render(request, 'pago.html', {'pedidos':pedidos})
 
 def form_eliminar_carrito (request,id):
     pedido = Pedido.objects.get(cod_ped=id) 
@@ -106,9 +123,22 @@ def registro(request):
 	return render(request, 'loginadmin/registro.html', context)
 
 def form_ver_pedidos(request):
-    pedidos = Pedido.objects.select_related().all()
+    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped')
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
 
+def form_entregado(request, id):
+    pedido = Pedido.objects.get(cod_ped=id)
+    pedido.entregado = True
+    pedido.save()
+
+    return redirect('form_ver_pedidos')
+
+def form_pagado(request, id):
+    pedido = Pedido.objects.get(cod_ped=id)
+    pedido.pagado = True
+    pedido.save()
+
+    return redirect('form_ver_pedidos')
 
 def form_modificar_pedidos(request,id):
     pedido = Pedido.objects.get(cod_ped=id)
@@ -117,8 +147,30 @@ def form_modificar_pedidos(request,id):
         'form': ModificarPedidoForm(instance=pedido)
     }
     if request.method == 'POST': 
+        
         formulario = ModificarPedidoForm(data=request.POST, instance = pedido)
         if formulario.is_valid: 
             formulario.save()
             return redirect('form_ver_pedidos')
     return render(request, 'admin/form_modificar_pedidos.html', datos)
+
+
+
+
+#  reporte de venta
+
+
+class ListaPedidosListView(ListView):
+    model = Pedido
+    template_name = "admin/reportes.html"
+    context_object_name = 'reportes'
+
+
+class ListPedidosPdf(View):
+    def get(self, request, *args, **kwargs):
+        pedidos = Pedido.objects.all()
+        data = {
+            'pedidos': pedidos
+        }
+        pdf = render_to_pdf('admin/reportes.html', data)
+        return HttpResponse(pdf, content_type= 'application/pdf')

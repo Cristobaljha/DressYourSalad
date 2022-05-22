@@ -11,6 +11,8 @@
       <title>Creando Producto</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+      <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>   <!-- link para el footer -->
+
     <script>
         $(function() 
         {
@@ -134,18 +136,34 @@
 
         
         <br><br><br>
-        <footer class= "container-fluid footer" >
-            <p>Encuentranos en Pajaritos #1021, Plaza de Maipú  
-            </p>           
-            <p>Síguenos: 
-              <i class="fa fa-whatsapp"></i>
-              <i class="fa fa-facebook"></i>
-              <i class="fa fa-envelope"></i> 
-              <i class="fa fa-instagram"></i> 
-              <i class="fa fa-twitter"></i> 
-            </p>
-            <p>©2022 Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados </p>
-          </footer>
+        <footer class="pie-pagina">
+          <div class="grupo-1">
+              <div class="box">
+                <br><br>
+                <img src="{% static 'img/logo.jpg'%}" id="borde"     width="100px" height="100px">
+              </div>
+              <div class="box">
+                  <h2 class="relleno">SOBRE NOSOTROS</h2>
+                  <p class="textojustificado">DressYourSalad es un pyme que esta en crecimiento, en donde nace la idea de comer sano y a la falta opciones de comida saludable en el mercado</p>
+                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacion de nuestros platos y ofrecer un servicio de calidad</p>
+              </div>
+              <div class="box">
+                  <h2 class="relleno">SIGUENOS</h2>
+                  <br>
+                  <div class="red-social">
+                      <a href="#" class="fa fa-facebook"></a>
+                      <a href="#" class="fa fa-instagram"></a>
+                      <a href="#" class="fa fa-twitter"></a>
+                      <a href="#" class="fa fa-youtube"></a>
+                      <br><br><br><br>
+                      <img src="{% static 'img/nombreEmpresa.jpeg'%}"  id="nombreEmpresa">
+                  </div>
+              </div>
+          </div>
+          <div class="grupo-2">
+              <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
+          </div>
+      </footer>
       
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
