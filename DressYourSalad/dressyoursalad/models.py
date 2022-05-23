@@ -13,6 +13,7 @@ class Bowl (models.Model):
     descripcion_Bowl = models.CharField(max_length=50, verbose_name='descripcion Bowl')
     cant_Bowl = models.IntegerField(verbose_name='Cantidad de Bowl')
     estado_stock = models.CharField(max_length=10, verbose_name='Estado Bowl')
+    
 
     def __str__(self):
         return self.cod_Bowl
@@ -23,8 +24,10 @@ class Pedido (models.Model):
     cantidad = models.CharField(max_length=25,verbose_name='Cantidad Bowl')
     pagado=models.BooleanField(default=False)
     entregado=models.BooleanField(default=False)
+    boleta=models.IntegerField(verbose_name='Número de boleta', default=0)
     bowl=models.ForeignKey(Bowl, on_delete=models.CASCADE)
     user=models.ForeignKey(User, on_delete=models.CASCADE)
+    precio=models.IntegerField(verbose_name='Precio', default=0)
 
     def __int__(self):
         return self.cod_ped

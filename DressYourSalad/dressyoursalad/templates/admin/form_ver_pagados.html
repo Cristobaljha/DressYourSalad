@@ -34,7 +34,7 @@
             <a class="nav-link" href="{% url 'form_ver' %}" style="color: #ffffff;">Modificar Bowls</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pagados' %}" style="color: #ffffff;">Marcar como Entregado</a>
+            <a class="nav-link" href="{% url 'form_ver_pedidos' %}" style="color: #ffffff;">Marcar como Pagado</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}" style="color: #ffffff;">Cerrar sesión</a>
@@ -47,7 +47,7 @@
     <!-- fin navbar -->      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Marcar Pedidos como Pagados</h3>
+        <h3>Marcar Pedidos como Entregados</h3>
         <div class="linea"></div>
     <div class="container">
     <table class="table">
@@ -78,27 +78,19 @@
                     <td>{{pedido.bowl.precio_Bowl|mul:pedido.cantidad}}</td>
                     <td>
                       {% if pedido.pagado %}
-                        <a href="{% url 'form_nopagado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Pagado</a>
+                        Pagado
                       {% else %}
-                        <a href="{% url 'form_pagado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Pagar</a>
+                        No Pagado
                       {% endif %}
                     </td>
-                    <td>      
-                      
-                      {% if pedido.entregado %}
-                        Entregado
-                      {% else %}
-                        No Entregado
-                      {% endif %} 
-                      <!--
+                    <td>
                       {% if pedido.entregado %}
                         <a href="{% url 'form_noentregado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Entregado</a>
                       {% else %}
-                        <a href="{% url 'form_entregado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">No Entregado</a>
-                      {% endif %} -->
-
+                        <a href="{% url 'form_entregado' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Entregar</a>
+                      {% endif %}
                     </td>
-                    <td><a href="{% url 'form_boleta' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Ingresar boleta</a></td>
+                    <td><a href="{% url 'form_boleta2' pedido.cod_ped%}" class="btn btn-primary" id="btnprueba">Ingresar boleta</a></td>
                 </tr>
             {%endfor%}
         </tbody>        

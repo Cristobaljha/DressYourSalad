@@ -16,7 +16,7 @@
     
     <body >
       <!-- navbar -->
-          <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top ">
+          <nav class="navbar navbar-expand-sm navbar-light  fixed-top "  style="background-color: #008000;">
           <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#opciones">
           <span class="navbar-toggler-icon"></span>
           </button>      
@@ -28,18 +28,17 @@
           <div class="collapse navbar-collapse " id="opciones">   
             <ul class="navbar-nav ">                
               <li class="nav-item " >                  
-                <h3 style="text-align: center">DressYourSalad</h3>
+                <h3 style="text-align: center; color:#ffffff ;">DressYourSalad</h3>
               </li>  
-              
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'form_pedido' %}" style="color: #ffffff;">Comprar</a>
+              </li>  
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}" style="color: #ffffff;">Cerrar sesión</a>
+              </li>       
               <li class="nav-item " >
-                <a class="nav-link " href="{% url 'form_ver' %}">Administrador</a>
-              </li>  
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'form_pedido' %}">Comprar</a>
-              </li>  
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
-              </li>                    
+                <a class="nav-link adminDerecha" href="{% url 'form_ver' %}" style="color: #ffffff;">Administrador</a>
+              </li>               
                          
             </ul>  
           </div>
@@ -49,7 +48,21 @@
             <a href="{% url 'registro' %}" button type="button" class="btn btn-primary" id="btnprueba">Regístrate</button></a>
           </div>      
       </nav>           
-        <!-- fin navbar -->          
+        <!-- fin navbar -->     
+          
+            
+		       
+
+              {% if messages %}
+                  {% for message in messages %}
+                  <div class="notification {{ message.tags}}">
+                    {{ message }}
+                  </div>
+                  {% endfor %}
+              {% endif %}
+              
+           
+          
 
         <br><br><br><br>
         <div class="galeria">
@@ -63,20 +76,29 @@
                 <li data-target="#carousel1" data-slide-to="0" class="active"></li>
                 <li data-target="#carousel1" data-slide-to="1"></li>
                 <li data-target="#carousel1" data-slide-to="2"></li>
+                <li data-target="#carousel1" data-slide-to="3"></li>
               </ol>
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img class="imagen" src="{% static 'img/local2.jpg'%}" alt="">
+                  <img class="imagen" src="{% static 'img/flyer.jpeg'%}" alt="">
                   <div class="carousel-caption">
                       <p>Solo lo mejor en tu mesa</p>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <img class="imagen" src="{% static 'img/local1.jpg'%}" alt="">
+                    <img class="imagen" src="{% static 'img/local2.jpg'%}" alt="">
                     <div class="carousel-caption">
                       <p>Sabemos lo que es comer bien</p>
                     </div>
                 </div>
+
+                <div class="carousel-item">
+                  <img class="imagen" src="{% static 'img/local1.jpg'%}" alt="">
+                  <div class="carousel-caption">
+                    <p>Sabemos lo que es comer bien</p>
+                  </div>
+                </div>
+
                 <div class="carousel-item">
                     <img class="imagen" src="{% static 'img/local3.jpg'%}" alt="">
                     <div class="carousel-caption">
@@ -152,13 +174,14 @@
           <div class="grupo-1">
               <div class="box">
                 <br><br>
-                <img src="{% static 'img/logo.jpg'%}" id="borde"     width="100px" height="100px">
+                <img src="{% static 'img/nombreEmpresa.jpeg'%}" id="borde"     >
               </div>
               <div class="box">
                   <h2 class="relleno">SOBRE NOSOTROS</h2>
                   <p class="textojustificado">DressYourSalad es un pyme que esta en crecimiento, en donde nace la idea de comer sano y a la falta opciones de comida saludable en el mercado</p>
-                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacion de nuestros platos y ofrecer un servicio de calidad</p>
-              </div>
+                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacción con nuestros productos y ofrecer un servicio de calidad</p>
+             
+                </div>
               <div class="box">
                   <h2 class="relleno">SIGUENOS</h2>
                   <br>
@@ -167,8 +190,8 @@
                       <a href="#" class="fa fa-instagram"></a>
                       <a href="#" class="fa fa-twitter"></a>
                       <a href="#" class="fa fa-youtube"></a>
-                      <br><br><br><br>
-                      <img src="{% static 'img/nombreEmpresa.jpeg'%}"  id="nombreEmpresa">
+                      
+                     
                   </div>
               </div>
           </div>

@@ -1,12 +1,60 @@
+
+
+ /* estilo nav */
+li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  
+  li a:hover {
+    background-color: #9acd32;
+  }
+
+  .adminDerecha
+  {
+      /* text-align: right;
+      list-style-position: inside; */
+      margin-left: 470px;
+  }
+
+  @media (max-width: 1300px){ /*una propiedad de los media quieries es que traspasa todo de una funcion hacia una media como en este caso, solo se agrego flex-direction: row;*/
+    .adminDerecha
+    {
+        margin-left: 0px;
+        
+    }
+}
+
+/*Notifications al crear un usuario en registro*/
+.notification {
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+  .success {
+    background: #43DC7E;
+    color: white;
+  }
+  .error {
+    background: #AB3444;
+    color: white;
+    margin-bottom: 20px;
+  }
+
 /*estilo botones nav*/
 
- 
-
-
-
-
 #btnprueba{
-    background-color: #33a111;
+    background-color: #9acd32;
     border-color: #9acd32
 }
 #btnprueba:hover{
@@ -92,32 +140,37 @@ h3 {
     width: 85%;
     margin: auto;
     justify-content: space-around;
-    flex-wrap: wrap;
+     
     border-radius:1px;
 }
 
 
 
 
-.contenedor-imagenes .imagen{
+#imagen_bowl{
     width: 32%;
-    position: relative;
-    height:250px;
+    
+    height:350px;
     margin-bottom:5px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, .75)
 }
 
 .imagen img{
     width: 100%;
     height:100%;
-    object-fit: cover;
+     
+}
+.imagen div{
+    width: 100%;
+    height:90px;
+    border: 1px solid yellow;
+    
 }
 
 .overlay{
     position: absolute;
     bottom: 0;
     left: 0;
-    background:rgba(150, 93, 79, 0.781) ;
+    background:rgba(85, 143, 18, 0.781) ;
     width: 100%;
     height: 0;
     overflow: hidden;
@@ -222,7 +275,7 @@ h3 {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap:50px;
-    padding: 45px 0px;
+    padding: 0px 0px;
 }
 .pie-pagina .grupo-1 .box figure{
     width: 100%;
@@ -261,7 +314,7 @@ h3 {
 }
 .pie-pagina .grupo-2{
     background-color: #9acd32;
-    padding: 15px 10px;
+    padding: 0px 0px;
     text-align: center;
     color: #fff;
 }
@@ -273,7 +326,7 @@ h3 {
         width: 90%;
         grid-template-columns: repeat(1, 1fr);
         grid-gap:30px;
-        padding: 35px 0px;
+        padding: 0px 0px;
     }
 }
 
@@ -284,7 +337,7 @@ h3 {
     border-radius: 15px 50px;
     background: #9acd32;
     padding: 20px;
-    width: 200px;
+    width: 300px;
     height: 150px;
   }
   
@@ -306,7 +359,15 @@ h3 {
     font-weight: 900;
 }
 
-/*-------------------------------- fin footer *----------------------------------/
+
+/*-------------------------------- fin footer *----------------------------------*/
 
 
 
+
+
+
+
+
+
+         

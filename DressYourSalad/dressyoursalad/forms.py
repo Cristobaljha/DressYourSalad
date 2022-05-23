@@ -10,13 +10,14 @@ class BowlForm(forms.ModelForm):
     
     class Meta:
         model = Bowl
-        fields = ['cod_Bowl', 'nom_Bowl', 'precio_Bowl', 'descripcion_Bowl', 'cant_Bowl']
+        fields = ['cod_Bowl', 'nom_Bowl', 'precio_Bowl', 'descripcion_Bowl', 'cant_Bowl', 'estado_stock']
         labels ={
             'cod_Bowl': 'Código', 
             'nom_Bowl': 'Nombre', 
             'precio_Bowl': 'Precio', 
             'descripcion_Bowl': 'Descripcion',
             'cant_Bowl': 'Cantidad',
+            'estado_stock': 'Imagen',
         }
         widgets={
             'cod_Bowl': forms.TextInput(
@@ -46,7 +47,23 @@ class BowlForm(forms.ModelForm):
                     'placeholder': 'Ingrese descripción', 
                     'id': 'descripcion_Bowl',
                 }
+            ), 
+        
+            'cant_Bowl': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese stock', 
+                    'id': 'cant_Bowl',
+                }
+            ), 
+            'estado_stock': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese imagen', 
+                    'id': 'estado_stock',
+                }
             )
+
 
         }
 
@@ -71,46 +88,39 @@ class PedidoForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',
                     'id': 'bowl',
+                   
                 }
             )
 
         }
 
-class ModificarPedidoForm(forms.ModelForm):
+class BoletaForm(forms.ModelForm):
     
     class Meta:
         model = Pedido
-        fields = ['pagado','entregado']
-        labels ={       
-        
-            'pagado': 'No pagado: False - Pagado: True',
-            'entregado': 'No Entregado: False - Entregado: True' 
-        }         
-        
+        fields = ['boleta']
+                
         widgets={
             
-            'pagado': forms.TextInput(
+            'boleta': forms.TextInput(
                 attrs={
                     'class': 'form-control', 
-                    'id': 'pagado',
-                }
-            ),
-            'entregado':forms.TextInput(
-                attrs={
-                    'class': 'form-control', 
-                    'id': 'entregado',
+                    'id': 'boleta',
                 }
             )
         }
+
+
 
 #configuracion del page registro
 
 class UserRegisterForm(UserCreationForm):
-	email = forms.EmailField()
-	password1 = forms.CharField(label='Contraseña: (Mínimo 8 caracteres)', widget=forms.PasswordInput)
-	password2 = forms.CharField(label='Confirma Contraseña', widget=forms.PasswordInput)
+        email = forms.EmailField()
+        password1 = forms.CharField(label='Contraseña: (Mínimo 8 caracteres)', widget=forms.PasswordInput)
+        password2 = forms.CharField(label='Confirma Contraseña', widget=forms.PasswordInput)
+        # informacion = forms.CheckboxInput(label='Quiere recibir notificaciones', widget=forms.CheckboxInput, )
 
-	class Meta:
-		model = User
-		fields = ['username', 'email', 'password1', 'password2']
-		help_texts = {k:"" for k in fields }
+        class Meta:
+            model = User
+            fields = ['username', 'email', 'password1', 'password2', ]
+            help_texts = {k:"" for k in fields }

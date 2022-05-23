@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Bowl, Pedido 
-from .forms import BowlForm, PedidoForm, UserRegisterForm, ModificarPedidoForm
+from .forms import BowlForm, PedidoForm, UserRegisterForm, BoletaForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from dressyoursalad.utils import render_to_pdf
@@ -59,6 +59,11 @@ def form_eliminar(request,id):
     bowl.delete()
     return redirect('form_ver')
 
+def form_bowls(request):
+
+    bowls2 = Bowl.objects.select_related().all() 
+    return render(request, 'admin/form_pedido.html', {'bowls2':bowls2})
+
 def form_pedido(request):
     if request.method=='POST':
         ped_form = PedidoForm(request.POST)
@@ -69,7 +74,7 @@ def form_pedido(request):
                 #return redirect('form_pedido', error='error')
                 ped_form=PedidoForm()
                 user = User.objects.get(username=request.user)
-                return render(request, 'pedido/form_pedido.html', {'ped_form':ped_form, 'user':user, 'error':True})
+                return render(request, 'pedido/form_pedido.html', {'bowl':bowl, 'ped_form':ped_form, 'user':user, 'error':True})
             else:
                 bowl.cant_Bowl = bowl.cant_Bowl - int(ped_form['cantidad'].value())
                 ped_form.user_id = user.id
@@ -81,8 +86,10 @@ def form_pedido(request):
         ped_form=PedidoForm()
         try:
             user = User.objects.get(username=request.user)
+            bowls2 = Bowl.objects.select_related().all() 
+
             if not user.is_superuser:
-                return render(request, 'pedido/form_pedido.html', {'ped_form':ped_form, 'user':user, 'error':False})
+                return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2 ,'ped_form':ped_form, 'user':user,  'error':False})
             else:
                 return render(request, 'index.html')
         except:
@@ -90,9 +97,13 @@ def form_pedido(request):
 
     
 def form_carrito(request):
-    #pedidos = Pedido.objects.select_related().all()
+   
     pedidos =  Pedido.objects.select_related().latest('fecha_ped')
     return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
+
+    #pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
+    #total = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
+    #return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
 
 def pago(request):
     #pedidos = Pedido.objects.select_related().all()
@@ -105,7 +116,8 @@ def form_eliminar_carrito (request,id):
     bowl.cant_Bowl = bowl.cant_Bowl + int(pedido.cantidad)
     pedido.delete()
     bowl.save() 
-    return redirect('form_pedido')
+    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
+    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
 
 
 def registro(request):
@@ -123,15 +135,26 @@ def registro(request):
 	return render(request, 'loginadmin/registro.html', context)
 
 def form_ver_pedidos(request):
-    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped')
+    pedidos = Pedido.objects.select_related().all().order_by('cod_ped').filter(pagado=False)
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
+
+def form_ver_pagados(request):
+    pedidos = Pedido.objects.select_related().all().order_by('cod_ped').filter(pagado=True).filter(entregado=False) 
+    return render(request, 'admin/form_ver_pagados.html', {'pedidos':pedidos})
 
 def form_entregado(request, id):
     pedido = Pedido.objects.get(cod_ped=id)
     pedido.entregado = True
     pedido.save()
 
-    return redirect('form_ver_pedidos')
+    return redirect('form_ver_pagados')
+
+def form_noentregado(request, id):
+    pedido = Pedido.objects.get(cod_ped=id)
+    pedido.entregado = False
+    pedido.save()
+
+    return redirect('form_ver_pagados')
 
 def form_pagado(request, id):
     pedido = Pedido.objects.get(cod_ped=id)
@@ -140,22 +163,42 @@ def form_pagado(request, id):
 
     return redirect('form_ver_pedidos')
 
-def form_modificar_pedidos(request,id):
+def form_nopagado(request, id):
+    pedido = Pedido.objects.get(cod_ped=id)
+    pedido.pagado = False
+    pedido.save()
+
+    return redirect('form_ver_pedidos')
+
+def form_boleta(request,id):
     pedido = Pedido.objects.get(cod_ped=id)
 
     datos ={
-        'form': ModificarPedidoForm(instance=pedido)
+        'form': BoletaForm(instance=pedido)
     }
     if request.method == 'POST': 
         
-        formulario = ModificarPedidoForm(data=request.POST, instance = pedido)
+        formulario = BoletaForm(data=request.POST, instance = pedido)
         if formulario.is_valid: 
             formulario.save()
             return redirect('form_ver_pedidos')
+    
     return render(request, 'admin/form_modificar_pedidos.html', datos)
 
+def form_boleta2(request,id):
+    pedido = Pedido.objects.get(cod_ped=id)
 
-
+    datos ={
+        'form': BoletaForm(instance=pedido)
+    }
+    if request.method == 'POST': 
+        
+        formulario = BoletaForm(data=request.POST, instance = pedido)
+        if formulario.is_valid: 
+            formulario.save()
+            return redirect('form_ver_pagados')
+    
+    return render(request, 'admin/form_modificar_pedidos.html', datos)
 
 #  reporte de venta
 
