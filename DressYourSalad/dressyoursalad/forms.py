@@ -71,7 +71,7 @@ class PedidoForm(forms.ModelForm):
     
     class Meta:
         model = Pedido
-        fields = ['cantidad', 'bowl']
+        fields = ['cantidad', 'bowl','id_carrito']
         labels ={
             'cantidad': 'Cantidad', 
             'bowl': 'Elige tu bowl'            
@@ -115,12 +115,11 @@ class BoletaForm(forms.ModelForm):
 #configuracion del page registro
 
 class UserRegisterForm(UserCreationForm):
-        email = forms.EmailField()
-        password1 = forms.CharField(label='Contraseña: (Mínimo 8 caracteres)', widget=forms.PasswordInput)
-        password2 = forms.CharField(label='Confirma Contraseña', widget=forms.PasswordInput)
-        # informacion = forms.CheckboxInput(label='Quiere recibir notificaciones', widget=forms.CheckboxInput, )
+	email = forms.EmailField()
+	password1 = forms.CharField(label='Contraseña: (Mínimo 8 caracteres)', widget=forms.PasswordInput)
+	password2 = forms.CharField(label='Confirma Contraseña', widget=forms.PasswordInput)
 
-        class Meta:
-            model = User
-            fields = ['username', 'email', 'password1', 'password2', ]
-            help_texts = {k:"" for k in fields }
+	class Meta:
+		model = User
+		fields = ['username', 'email', 'password1', 'password2']
+		help_texts = {k:"" for k in fields }

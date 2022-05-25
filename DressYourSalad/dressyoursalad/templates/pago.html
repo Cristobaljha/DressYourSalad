@@ -6,14 +6,14 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="{%static 'css/estilos.css'%}">
-    <title>Ver</title>
+    <title>DressYourSalad &copy; Paga tu Pedido!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> 
     <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>   <!-- link para el footer -->
 
 </head>
 <body>
     <!-- navbar -->
-    <nav class="navbar navbar-expand-sm navbar-light  fixed-top "  style="background-color: #008000;">
+    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top ">
       <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#opciones">
       <span class="navbar-toggler-icon"></span>
       </button>      
@@ -26,14 +26,23 @@
       <div class="collapse navbar-collapse " id="opciones">   
         <ul class="navbar-nav">                
           <li class="nav-item " >                  
-            <h3 style="text-align: center; color:#ffffff ;">DressYourSalad</h3>
+            <h3 style="text-align: center">DressYourSalad</h3>
           </li>          
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}" style="color: #ffffff;">Volver a Pagina principal</a>
+            <a class="nav-link" href="{% url 'index' %}">Volver a Pagina principal</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'seguir_comprando' IdCarrito%}">Seguir Comprando</a>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
           </li>               
         </ul>  
       </div>
-        <!-- insertar botones --> 
+      {% if user_id > 0 %}
+      Bienvenido: {{nombre_user}} !
+      {% endif %}  
+        
         
   </nav>           
     <!-- fin navbar -->      
@@ -41,32 +50,26 @@
     <div class="galeria">
         <h3>Información para Pago</h3>
         <div class="linea"></div>
-
+        <br><br>
         <div class="container">
           <table class="table">
               <thead>
-                  <tr>
-                      <th scope="col">Código pedido</th>
-                      <th scope="col">Bowl</th>
-                      <th scope="col">Cantidad</th>
-                      <th scope="col">Precio</th>
-                      <th scope="col">Total a Pagar</th>
-                  </tr>
+
+                <tr>
+                  <!--<th scope="col">Código pedido</th>-->
+                  <th scope="col">
+                    <h3>ID Pedido:&nbsp;{{IdCarrito}}</h3>
+                                 
+                  </th>
+              </tr>
+              <tr>
+                <th scope="col"><h3>Total a Pagar:&nbsp;${{total.precio__sum}}</h3></th>           
+              </tr>
+
               </thead>
-              <tbody>
-                  {% load mathfilters %}
-                  
-                      <tr>
-                          <td>{{pedidos.cod_ped}}</td>
-                          <td>{{pedidos.bowl.nom_Bowl}}</td>
-                          <td>{{pedidos.cantidad}}</td>
-                          <td>{{pedidos.bowl.precio_Bowl}}</td>
-                          <td>{{pedidos.bowl.precio_Bowl|mul:pedidos.cantidad}}</td>
-                           </tr>
-                  
-              </tbody>        
+                 
             </table>
-          <br><br><br>
+        <br><br><br>
       
       
           </div>
@@ -118,14 +121,13 @@
           <div class="grupo-1">
               <div class="box">
                 <br><br>
-                <img src="{% static 'img/nombreEmpresa.jpeg'%}" id="borde"     width="100px" height="100px">
+                <img src="{% static 'img/logo.jpg'%}" id="borde"     width="100px" height="100px">
               </div>
               <div class="box">
                   <h2 class="relleno">SOBRE NOSOTROS</h2>
                   <p class="textojustificado">DressYourSalad es un pyme que esta en crecimiento, en donde nace la idea de comer sano y a la falta opciones de comida saludable en el mercado</p>
-                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacción con nuestros productos y ofrecer un servicio de calidad</p>
-             
-                </div>
+                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacion de nuestros platos y ofrecer un servicio de calidad</p>
+              </div>
               <div class="box">
                   <h2 class="relleno">SIGUENOS</h2>
                   <br>
@@ -134,8 +136,8 @@
                       <a href="#" class="fa fa-instagram"></a>
                       <a href="#" class="fa fa-twitter"></a>
                       <a href="#" class="fa fa-youtube"></a>
-                     
-                     
+                      <br><br><br><br>
+                      <img src="{% static 'img/nombreEmpresa.jpeg'%}"  id="nombreEmpresa">
                   </div>
               </div>
           </div>

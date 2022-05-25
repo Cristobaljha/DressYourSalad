@@ -1,29 +1,3 @@
-
-#borde{
-  border-radius: 15px 50px;
-  background: #9acd32;
-  padding: 20px;
-  width: 150%;
-  height: 50px;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-
-li a:hover {
-  background-color: #9acd32;
-}
-
 body{
 	background: #2F4F4F;
 	font-size: 62.5%;

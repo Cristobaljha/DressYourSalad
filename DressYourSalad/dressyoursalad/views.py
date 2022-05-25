@@ -1,21 +1,34 @@
 from django.shortcuts import render, redirect
-from .models import Bowl, Pedido 
+from .models import Bowl, Pedido, Carrito 
 from .forms import BowlForm, PedidoForm, UserRegisterForm, BoletaForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from dressyoursalad.utils import render_to_pdf
-from django.views.generic import ListView, View
-from django.http import HttpResponse
+from django.db.models import Max, Sum
 
+IdCarrito = 1
+Carro_Activo = 1
 # Create your views here.
 
-def index(request):
-    return render(request, 'index.html')
+def carritoActivo(user):
+	global IdCarrito, Carro_Activo
+	IdCarrito = Pedido.objects.all().aggregate(Max('id_carrito'))
+	Carro_Activo = Pedido.objects.all().filter(pagado=False).filter(user_id=user).filter(reservado=0).aggregate(Max('id_carrito'))
 
+def index(request):
+    try:
+        user = User.objects.get(username=request.user)
+
+        return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
+    except:
+            return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
+
+def logout(request):
+    return render(request, 'index.html', {'user_id':0, 'nombre_user': ''})
+    
 def pago(request):   
     bowls= Bowl.objects.all()
     datos ={
-        'bowls': bowls
+        'bowls': bowls      
     }
     return render(request, 'pago.html', datos)
 
@@ -27,9 +40,9 @@ def form_ver(request):
             #bowls = Pedido.objects.select_related().all()
             return render(request, 'admin/form_ver.html', {'bowls':bowls})
         else:
-            return render(request, 'index.html')
+            return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
     except:
-        return render(request, 'index.html')
+        return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
 def form_crear(request):
     if request.method=='POST': 
@@ -64,60 +77,113 @@ def form_bowls(request):
     bowls2 = Bowl.objects.select_related().all() 
     return render(request, 'admin/form_pedido.html', {'bowls2':bowls2})
 
-def form_pedido(request):
-    if request.method=='POST':
-        ped_form = PedidoForm(request.POST)
-        user = User.objects.get(username=request.user)
-        if ped_form.is_valid():
-            bowl = Bowl.objects.get(cod_Bowl=ped_form['bowl'].value())
-            if bowl.cant_Bowl < int(ped_form['cantidad'].value()):
-                #return redirect('form_pedido', error='error')
-                ped_form=PedidoForm()
-                user = User.objects.get(username=request.user)
-                return render(request, 'pedido/form_pedido.html', {'bowl':bowl, 'ped_form':ped_form, 'user':user, 'error':True})
-            else:
-                bowl.cant_Bowl = bowl.cant_Bowl - int(ped_form['cantidad'].value())
-                ped_form.user_id = user.id
-                pedido = Pedido(cantidad=ped_form['cantidad'].value(), bowl_id=ped_form['bowl'].value(), user_id=user.id)
-                pedido.save()
-                bowl.save()
-                return redirect('form_carrito')
-    else:
-        ped_form=PedidoForm()
-        try:
-            user = User.objects.get(username=request.user)
-            bowls2 = Bowl.objects.select_related().all() 
-
-            if not user.is_superuser:
-                return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2 ,'ped_form':ped_form, 'user':user,  'error':False})
-            else:
-                return render(request, 'index.html')
-        except:
-            return redirect('accounts/login')
-
+def seguir_comprando(request, id):
     
-def form_carrito(request):
-   
-    pedidos =  Pedido.objects.select_related().latest('fecha_ped')
-    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
+    user = User.objects.get(username=request.user)
+    bowls2 = Bowl.objects.select_related().all() 
+    #return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user})
+    return redirect('../form_pedido', {'bowls2':bowls2, 'user':user, 'IdCarrito':id})
 
-    #pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
-    #total = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
-    #return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
+def ver_carrito(request, id):
+    user = User.objects.get(username=request.user)
+    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(id_carrito=id)
+    total = Pedido.objects.all().filter(id_carrito=id).aggregate(Sum('precio'))
+    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':id, 'user_id':user.id, 'nombre_user': user.username})
 
-def pago(request):
-    #pedidos = Pedido.objects.select_related().all()
-    pedidos =  Pedido.objects.select_related().latest('fecha_ped')
-    return render(request, 'pago.html', {'pedidos':pedidos})
+def form_pedido(request):
+    try:
+        user = User.objects.get(username=request.user)
+        carritoActivo(user)
+        #Cuando no existe ningun carrito inicializamos.
+        if(IdCarrito['id_carrito__max']  is None):
+            Carro_Activo['id_carrito__max'] = 100
 
-def form_eliminar_carrito (request,id):
+        else:
+            #Si hay carrito activo   
+            if(Carro_Activo['id_carrito__max']  is None):
+                Carro_Activo['id_carrito__max'] = IdCarrito['id_carrito__max'] + 1   
+        IdCarritoActivo =  Carro_Activo['id_carrito__max']
+        items_carrito = Pedido.objects.filter(id_carrito=IdCarritoActivo).count()
+
+
+        if request.method=='POST':
+            ped_form = PedidoForm(request.POST)
+            user = User.objects.get(username=request.user)
+            
+            if ped_form.is_valid():
+                bowl = Bowl.objects.get(cod_Bowl=ped_form['bowl'].value())
+                bowls2 = Bowl.objects.select_related().all() 
+
+                carritoActivo(user)
+                if bowl.cant_Bowl < int(ped_form['cantidad'].value()):
+                    #return redirect('form_pedido', error='error')
+                    ped_form=PedidoForm()
+                    user = User.objects.get(username=request.user)
+                    return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user, 'error':True, 'IdCarrito': IdCarritoActivo, 'Id_Bowl': bowl.cod_Bowl})
+                else:
+                    
+                    bowl.cant_Bowl = bowl.cant_Bowl - int(ped_form['cantidad'].value())
+                    pedido = Pedido(cantidad=ped_form['cantidad'].value(), bowl_id=ped_form['bowl'].value(), user_id=user.id,precio = (bowl.precio_Bowl*int(ped_form['cantidad'].value())), id_carrito=ped_form['id_carrito'].value())
+                    pedido.save()
+                    idPed = bowl.save()
+                    
+                    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False).filter(reservado=0)
+                    total = Pedido.objects.all().filter(id_carrito=ped_form['id_carrito'].value()).aggregate(Sum('precio'))
+                    
+                    pedido3 = Pedido.objects.filter(user_id=user.id).latest('cod_ped')
+                    PrecioCarrito= pedido3.precio
+                    CantidadCarrito= int(pedido3.cantidad)
+                    #(Bowl.precio_Bowl*int(ped_form['cantidad'].value()))
+                    items_carrito2 = Pedido.objects.filter(id_carrito=IdCarritoActivo).count()
+                    CarritoBD2 = Carrito.objects.filter(id_carrito=IdCarritoActivo).count()
+                    
+
+                    if (items_carrito2 > 1 or CarritoBD2 == 1):
+                        carrito5 = Carrito.objects.get(id_carrito=IdCarritoActivo)
+                        carrito5.precio = carrito5.precio + PrecioCarrito
+                        carrito5.cantidad = carrito5.cantidad + CantidadCarrito
+                    else:
+                        carrito5 = Carrito(id_carrito=IdCarritoActivo, precio = PrecioCarrito, cantidad=CantidadCarrito,  user_id=user.id)
+
+                    carrito5.save()
+
+                    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':ped_form['id_carrito'].value(), 'user_id':user.id, 'nombre_user': user.username})
+        else:
+            ped_form=PedidoForm()
+
+            try:
+                
+                bowls2 = Bowl.objects.select_related().all()             
+                if not user.is_superuser:
+                    return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2 ,'ped_form':ped_form, 'user':user,  'error':False, 'IdCarrito':IdCarritoActivo, 'Id_Bowl':0, 'items_carrito':items_carrito, 'user_id':user.id, 'nombre_user': user.username})
+                else:
+                    return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
+            except:
+                return redirect('accounts/login')
+    except:
+        return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
+
+def form_eliminar_carrito (request,id,id2):
+    
     pedido = Pedido.objects.get(cod_ped=id) 
     bowl = Bowl.objects.get(cod_Bowl=pedido.bowl_id)
     bowl.cant_Bowl = bowl.cant_Bowl + int(pedido.cantidad)
     pedido.delete()
     bowl.save() 
-    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False)
-    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos})
+
+    
+    carrito5 = Carrito.objects.get(id_carrito=id2)
+    carrito5.precio = carrito5.precio - pedido.precio
+    carrito5.cantidad = carrito5.cantidad - int(pedido.cantidad)
+    
+    carrito5.save()
+
+
+    user = User.objects.get(username=request.user)
+
+    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False).filter(reservado=0)
+    total = Pedido.objects.all().filter(id_carrito=id2).aggregate(Sum('precio'))
+    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':id2, 'user_id':user.id, 'nombre_user': user.username})    
 
 
 def registro(request):
@@ -135,17 +201,21 @@ def registro(request):
 	return render(request, 'loginadmin/registro.html', context)
 
 def form_ver_pedidos(request):
-    pedidos = Pedido.objects.select_related().all().order_by('cod_ped').filter(pagado=False)
+    pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
 
 def form_ver_pagados(request):
-    pedidos = Pedido.objects.select_related().all().order_by('cod_ped').filter(pagado=True).filter(entregado=False) 
+    pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=True).filter(entregado=False)
     return render(request, 'admin/form_ver_pagados.html', {'pedidos':pedidos})
 
 def form_entregado(request, id):
-    pedido = Pedido.objects.get(cod_ped=id)
-    pedido.entregado = True
-    pedido.save()
+      #pedido = Pedido.objects.get(id_carrito=id)
+    Pedido.objects.filter(id_carrito=id).update(entregado=True)
+    #pedido.save()
+
+    CarritoBD = Carrito.objects.get(id_carrito=id)
+    CarritoBD.entregado = True
+    CarritoBD.save()
 
     return redirect('form_ver_pagados')
 
@@ -157,9 +227,13 @@ def form_noentregado(request, id):
     return redirect('form_ver_pagados')
 
 def form_pagado(request, id):
-    pedido = Pedido.objects.get(cod_ped=id)
-    pedido.pagado = True
-    pedido.save()
+    #pedido = Pedido.objects.get(id_carrito=id)
+    Pedido.objects.filter(id_carrito=id).update(pagado=True)
+    #pedido.save()
+
+    CarritoBD = Carrito.objects.get(id_carrito=id)
+    CarritoBD.pagado = True
+    CarritoBD.save()
 
     return redirect('form_ver_pedidos')
 
@@ -169,6 +243,12 @@ def form_nopagado(request, id):
     pedido.save()
 
     return redirect('form_ver_pedidos')
+
+def reservar_carrito(request, id):
+    Pedido.objects.filter(id_carrito=id).update(reservado=1)
+    total = Pedido.objects.all().filter(id_carrito=id).aggregate(Sum('precio'))
+
+    return render(request, 'pago.html', {'IdCarrito':id, 'total':total})
 
 def form_boleta(request,id):
     pedido = Pedido.objects.get(cod_ped=id)
@@ -200,20 +280,6 @@ def form_boleta2(request,id):
     
     return render(request, 'admin/form_modificar_pedidos.html', datos)
 
-#  reporte de venta
 
 
-class ListaPedidosListView(ListView):
-    model = Pedido
-    template_name = "admin/reportes.html"
-    context_object_name = 'reportes'
 
-
-class ListPedidosPdf(View):
-    def get(self, request, *args, **kwargs):
-        pedidos = Pedido.objects.all()
-        data = {
-            'pedidos': pedidos
-        }
-        pdf = render_to_pdf('admin/reportes.html', data)
-        return HttpResponse(pdf, content_type= 'application/pdf')

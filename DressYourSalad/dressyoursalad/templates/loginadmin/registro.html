@@ -1,3 +1,5 @@
+<title>DressYourSalad &copy; Regístrate</title>
+
 {% extends 'loginadmin/layout.html' %}
 
 {% block content %}
@@ -5,14 +7,6 @@
 <form class="form" method="post">
 	{% csrf_token %}
 	{{ form.as_p }}
-	<div class="form-check form-check-inline">
-		<input class="form-check-input" type="checkbox" value="" id="checkbox1" name="checkbox1" style="width: 70px;">
-		<label class="form-check-label texto" for="checkbox1" style="width: 250px;">
-		  ¡Sí! Quiero recibir ofertas especiales y otra información de DressYourSalad
-		</label>
-		
-	   </div>
-	   
 
 	<button type="submit" id="submit" style="background-color: #9acd32;">Registrarse</button>
 </form>

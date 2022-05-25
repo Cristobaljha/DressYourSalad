@@ -1,57 +1,48 @@
+/*estilo botones nav*/
 
+ 
 
- /* estilo nav */
-li {
-    float: left;
-  }
-  
-  li a {
-    display: block;
-    color: white;
+.galeria{
+    width: 100%;
+    border: 0px solid red;
+    height: 1600px;
+    
+}
+.galeria h1{
+    font-family: Verdana;
     text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  
-  li a:hover {
-    background-color: #9acd32;
-  }
-
-  .adminDerecha
-  {
-      /* text-align: right;
-      list-style-position: inside; */
-      margin-left: 470px;
-  }
-
-  @media (max-width: 1300px){ /*una propiedad de los media quieries es que traspasa todo de una funcion hacia una media como en este caso, solo se agrego flex-direction: row;*/
-    .adminDerecha
-    {
-        margin-left: 0px;
-        
-    }
+    margin:100px 0 15px 0;
+    font-weight: 300;
+    font-size:  x-large;
 }
 
-/*Notifications al crear un usuario en registro*/
-.notification {
-    text-align: center;
-    padding: 10px 20px;
-    border-radius: 4px;
-    color: #fff;
-    font-size: 0.9rem;
-  }
-  .success {
-    background: #43DC7E;
-    color: white;
-  }
-  .error {
-    background: #AB3444;
-    color: white;
-    margin-bottom: 20px;
-  }
 
-/*estilo botones nav*/
+.linea{
+    border-top: 5px solid #9acd32 ;
+    margin-bottom: 40px;
+}
+
+.container_prod{
+    border: 0px solid black;
+    justify-content:center;
+    width: 80%;
+    margin-left: 300px;
+
+}
+.row_prod{
+    border: 0px solid blue;
+    width: 75%;
+    height: 1400px;
+    justify-content:center;
+
+}
+.col_prod{
+    border: 0px solid yellow;
+    justify-content:center;
+    width: 80%;
+}
+
+
 
 #btnprueba{
     background-color: #9acd32;
@@ -121,19 +112,6 @@ h3 {
     box-sizing: border-box;
 }
 
-.galeria h1{
-    font-family: Verdana;
-    text-align: center;
-    margin:100px 0 15px 0;
-    font-weight: 300;
-    font-size:  x-large;
-}
-
-
-.linea{
-    border-top: 5px solid #9acd32 ;
-    margin-bottom: 40px;
-}
 
 .contenedor-imagenes{
     display:flex;
@@ -149,7 +127,7 @@ h3 {
 
 #imagen_bowl{
     width: 32%;
-    
+    float: left;
     height:350px;
     margin-bottom:5px;
 }
@@ -162,7 +140,7 @@ h3 {
 .imagen div{
     width: 100%;
     height:90px;
-    border: 1px solid yellow;
+    border: 0px solid yellow;
     
 }
 
@@ -275,7 +253,7 @@ h3 {
     display:grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap:50px;
-    padding: 0px 0px;
+    padding: 45px 0px;
 }
 .pie-pagina .grupo-1 .box figure{
     width: 100%;
@@ -314,7 +292,7 @@ h3 {
 }
 .pie-pagina .grupo-2{
     background-color: #9acd32;
-    padding: 0px 0px;
+    padding: 15px 10px;
     text-align: center;
     color: #fff;
 }
@@ -326,7 +304,7 @@ h3 {
         width: 90%;
         grid-template-columns: repeat(1, 1fr);
         grid-gap:30px;
-        padding: 0px 0px;
+        padding: 35px 0px;
     }
 }
 
@@ -337,7 +315,7 @@ h3 {
     border-radius: 15px 50px;
     background: #9acd32;
     padding: 20px;
-    width: 300px;
+    width: 200px;
     height: 150px;
   }
   
@@ -359,15 +337,4 @@ h3 {
     font-weight: 900;
 }
 
-
-/*-------------------------------- fin footer *----------------------------------*/
-
-
-
-
-
-
-
-
-
-         
+/*-------------------------------- fin footer ----------------------------------*/
