@@ -3,6 +3,9 @@ from .models import Bowl, Pedido, Carrito
 from .forms import BowlForm, PedidoForm, UserRegisterForm, BoletaForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+import pandas as pd 
+import numpy as np
+
 from django.db.models import Max, Sum
 
 IdCarrito = 1
@@ -17,14 +20,29 @@ def carritoActivo(user):
 def index(request):
     try:
         user = User.objects.get(username=request.user)
-
-        return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
+        if not user.is_superuser:
+            return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username, 'superuser':user.is_superuser})
+        else:
+            return render(request, 'admin/dashboard.html')
     except:
             return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
-def logout(request):
-    return render(request, 'index.html', {'user_id':0, 'nombre_user': ''})
+def dashboard(request):
     
+    #bowls= Bowl.objects.all()
+    bowlsBD = Bowl.objects.values_list('nom_Bowl', flat=True).order_by('cod_Bowl')
+    labelsBowls = list(bowlsBD)
+
+    DataBowls = []
+
+    queryset = Pedido.objects.values('bowl_id').annotate(venta=Sum('cantidad')).filter(pagado=True).order_by('bowl_id')
+    
+    for entry in queryset:
+        DataBowls.append(entry['venta'])
+    
+    return render(request, 'admin/dashboard.html', {'labelsBowls':labelsBowls, 'DataBowls':DataBowls})
+
+
 def pago(request):   
     bowls= Bowl.objects.all()
     datos ={
@@ -40,7 +58,7 @@ def form_ver(request):
             #bowls = Pedido.objects.select_related().all()
             return render(request, 'admin/form_ver.html', {'bowls':bowls})
         else:
-            return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
+            return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username, 'superuser':user.is_superuser})
     except:
         return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
@@ -157,7 +175,7 @@ def form_pedido(request):
                 if not user.is_superuser:
                     return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2 ,'ped_form':ped_form, 'user':user,  'error':False, 'IdCarrito':IdCarritoActivo, 'Id_Bowl':0, 'items_carrito':items_carrito, 'user_id':user.id, 'nombre_user': user.username})
                 else:
-                    return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username})
+                    return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username, 'superuser':user.is_superuser})
             except:
                 return redirect('accounts/login')
     except:
@@ -170,7 +188,6 @@ def form_eliminar_carrito (request,id,id2):
     bowl.cant_Bowl = bowl.cant_Bowl + int(pedido.cantidad)
     pedido.delete()
     bowl.save() 
-
     
     carrito5 = Carrito.objects.get(id_carrito=id2)
     carrito5.precio = carrito5.precio - pedido.precio
@@ -200,7 +217,8 @@ def registro(request):
 	context = { 'form' : form } 
 	return render(request, 'loginadmin/registro.html', context)
 
-def form_ver_pedidos(request):
+def form_ver_pedidos(request): 
+
     pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
 
@@ -250,24 +268,9 @@ def reservar_carrito(request, id):
 
     return render(request, 'pago.html', {'IdCarrito':id, 'total':total})
 
-def form_boleta(request,id):
-    pedido = Pedido.objects.get(cod_ped=id)
-
-    datos ={
-        'form': BoletaForm(instance=pedido)
-    }
-    if request.method == 'POST': 
-        
-        formulario = BoletaForm(data=request.POST, instance = pedido)
-        if formulario.is_valid: 
-            formulario.save()
-            return redirect('form_ver_pedidos')
-    
-    return render(request, 'admin/form_modificar_pedidos.html', datos)
-
 def form_boleta2(request,id):
     pedido = Pedido.objects.get(cod_ped=id)
-
+    
     datos ={
         'form': BoletaForm(instance=pedido)
     }
@@ -280,6 +283,18 @@ def form_boleta2(request,id):
     
     return render(request, 'admin/form_modificar_pedidos.html', datos)
 
-
-
+def form_boleta(request,id):
+    carrito = Carrito.objects.get(id_carrito=id)
+    
+    datos ={
+        'form': BoletaForm(instance=carrito)
+    }
+    if request.method == 'POST': 
+        
+        formulario = BoletaForm(data=request.POST, instance = carrito)
+        if formulario.is_valid: 
+            formulario.save()
+            return redirect('form_ver_pedidos')
+    
+    return render(request, 'admin/form_modificar_pedidos.html', datos)
 

@@ -93,7 +93,7 @@
                     <input type="hidden" id="bowl" name="bowl" value="{{bo.cod_Bowl}}">
                     <input type="hidden" id="precio" name="precio"  class="form-control" value=" {{bo.precio_Bowl}}">
                     <input type="hidden" id="id_carrito" name="id_carrito"  class="form-control" value="{{IdCarrito}}">
-                    {% if bo.cant_Bowl == 0 %}
+                    {% if bo.cant_Bowl == 0 %}       
                      <h4>Producto No Disponible       </h4>
                      {% else %}
                      {% if error %}
@@ -105,72 +105,45 @@
                       <input type="submit" class="btn btn-danger" id="btnprueba" value="Agregar al Carrito">
                     {% endif %}
                     <br>Stock Disponible: {{bo.cant_Bowl}}
+                    <br>Receta: {{bo.descripcion_Bowl}}
                   </form> 
               </td>
             </tr>
             <tr><td>&nbsp;</td></tr>
           </table>
           <br>
-          <!--
-              <div ><img class="card-img-top" src="static/img/{{bo.estado_stock}}" style="width: 250px;"></div>             
-              <div class="card-body">
-                <h4 class="card-title">
-                  {{bo.cod_Bowl}} / {{bo.nom_Bowl}} / ${{bo.precio_Bowl}} 
-                  <form method="POST" action="#" id="formulario">
-                    {%csrf_token%}
-                    <input type="hidden" id="bowl" name="bowl" value="{{bo.cod_Bowl}}">
-                    <input type="hidden" id="precio" name="precio"  class="form-control" value=" {{bo.precio_Bowl}}">
-                    <input type="hidden" id="id_carrito" name="id_carrito"  class="form-control" value="{{IdCarrito}}">
-                    {% if bo.cant_Bowl == 0 %}
-                     Producto No Disponible       
-                     {% else %}
-                     {% if error %}
-                      {% if Id_Bowl == bo.cod_Bowl%}
-                      Cantidad ingresada supera al stock : {{bo.cant_Bowl}}       
-                      {% endif %}
-                     {% endif %}
-                     <div class="form-group">
-                      Cantidad: <input type="number" name="cantidad" id="cantidad" size="10" maxlength="25" required>
-                      <input type="submit" class="btn btn-danger" id="btnprueba" value="Agregar al Carrito">
-                    </div>
-                    {% endif %}
-
-                  </form>  
-                </h4>          
-              </div> --> 
+          
             </div> 
             {%endfor%}                
       </div>
     </div>
  </div>
-        <footer class="pie-pagina">
-          <div class="grupo-1">
-              <div class="box">
-                <br><br>
-                <img src="{% static 'img/logo.jpg'%}" id="borde"     width="100px" height="100px">
-              </div>
-              <div class="box">
-                  <h2 class="relleno">SOBRE NOSOTROS</h2>
-                  <p class="textojustificado">DressYourSalad es un pyme que esta en crecimiento, en donde nace la idea de comer sano y a la falta opciones de comida saludable en el mercado</p>
-                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacion de nuestros platos y ofrecer un servicio de calidad</p>
-              </div>
-              <div class="box">
-                  <h2 class="relleno">SIGUENOS</h2>
-                  <br>
-                  <div class="red-social">
-                      <a href="#" class="fa fa-facebook"></a>
-                      <a href="#" class="fa fa-instagram"></a>
-                      <a href="#" class="fa fa-twitter"></a>
-                      <a href="#" class="fa fa-youtube"></a>
-                      <br><br><br><br>
-                      <img src="{% static 'img/nombreEmpresa.jpeg'%}"  id="nombreEmpresa">
-                  </div>
-              </div>
+ <br><br><br><br>
+<footer class="pie-pagina">
+  <div class="grupo-1">
+      <div class="box">                
+        <img src="{% static 'img/nombreEmpresa.jpeg'%}" id="borde"     width="100px" height="100px">
+      </div>
+      <div class="box">
+          <h2 class="relleno">SOBRE NOSOTROS</h2>
+          <p class="textojustificado">Nuestra misión es promover una cultura de la comida saludable y ofrecer a nuestros clientes un servicio de calidad.</p>
+      </div>
+      <div class="box">
+          <h2 class="relleno">SIGUENOS</h2>
+          <br>
+          <div class="red-social">
+              <a href="#" class="fa fa-facebook"></a>
+              <a href="#" class="fa fa-instagram"></a>
+              <a href="#" class="fa fa-twitter"></a>
+              <a href="#" class="fa fa-youtube"></a>
+              
           </div>
-          <div class="grupo-2">
-              <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
-          </div>
-      </footer>
+      </div>
+  </div>
+  <div class="grupo-2">
+      <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
+  </div>
+</footer>
       
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

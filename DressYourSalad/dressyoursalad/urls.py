@@ -1,5 +1,5 @@
 from django.urls import URLPattern, path
-from .views import index,pago, form_crear, form_modificar,form_eliminar,form_ver, registro, form_pedido, reservar_carrito, seguir_comprando, ver_carrito,form_ver_pedidos, form_eliminar_carrito, form_entregado, form_pagado, form_nopagado, form_noentregado, form_boleta, form_ver_pagados,form_boleta2, form_bowls
+from .views import index,pago, form_crear, form_modificar,form_eliminar,form_ver, registro, form_pedido, reservar_carrito, seguir_comprando, ver_carrito,form_ver_pedidos, form_eliminar_carrito, form_entregado, form_pagado, form_nopagado, dashboard, form_noentregado, form_boleta, form_ver_pagados,form_boleta2, form_bowls
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -32,9 +32,8 @@ urlpatterns = [
     path('form_noentregado/<id>', form_noentregado, name="form_noentregado"),
     path('form_pagado/<id>', form_pagado, name="form_pagado"),
     path('form_nopagado/<id>', form_nopagado, name="form_nopagado"),
+    path('dashboard', dashboard, name="dashboard"),
     
     path('form_bowls', form_bowls, name="form_bowls"),
 
-    
-    
 ]

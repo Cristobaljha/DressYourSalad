@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      {% load static %}
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" type="text/css" href="{%static 'css/estilos.css'%}">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+      <link rel="stylesheet" href="cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+      <title>DashBoard</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
+      <script src="https://kit.fontawesome.com/eb496ab1a0.js" crossorigin="anonymous"></script>   <!-- link para el footer -->
+      <script src="{%static 'js/chart.js'%}"></script>
+    </head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top ">
+        <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#opciones">
+        <span class="navbar-toggler-icon"></span>
+        </button>      
+        {% load static %}
+        <!-- insertar logo -->            
+        <a class="navbar-brand " href="#">
+          <img src="{% static 'img/logo.jpg'%}" width="60" height="60" alt="">
+        </a>
+        <div class="collapse navbar-collapse " id="opciones">   
+          <ul class="navbar-nav">                
+            <li class="nav-item " >                  
+              <h3 style="text-align: center">DressYourSalad</h3>
+            </li>          
+            <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
+          </li>
+          <li class="nav-item">
+            <b><u><a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a></u></b>
+          </li> 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
+          </li>          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+          </li>                 
+          </ul>  
+        </div>
+     
+    </nav>      
+    <br><br><br><br>
+    <div class="galeria">
+        <h3>DASHBOARD</h3>
+    <div class="linea"></div>
+    <div class="container">   
+      <h3>Proteína, el ingrediente base en tu bowl</h3>
+      <br>
+      <div class="row">       
+        <div class="col-md">        
+            <div class="card">
+                 <center><h2>El más vendido!</h2></center>
+                <canvas id="myChart" style="margin-bottom: 30px; width: 50%; height: 50%;"></canvas>
+            </div>
+        </div>
+        <div class="col-md">        
+          <div class="card">
+            <center><h2>Ventas x Mes</h2></center>
+            <canvas id="grafica" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
+          </div>
+      </div> 
+      <br> 
+      <div class="col-md">        
+        <div class="card">
+          <center><h2>Ranking Clientes</h2></center>
+          <canvas id="grafica2" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
+        </div>
+    </div>       
+      </div>
+    </div>  
+      
+      
+      
+          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>  
+          {% block content %}
+          <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var valor = Math.random() * (600 - 50) + 50;
+            //console.log(valor);
+            $("#myChart").css('width','200px');
+            $("#myChart").css('height', '200px');
+
+            var chart = new Chart(ctx, {
+                type: 'doughnut',
+                data:{
+              datasets: [{
+                data: {{DataBowls|safe}} ,
+                backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+                label: 'El más vendido'}],
+                labels: {{labelsBowls|safe}}
+              },
+                options: {responsive: true}
+            });
+            </script>
+          {% endblock %}
+            <script>
+
+              // Obtener una referencia al elemento canvas del DOM
+            const $grafica = document.querySelector("#grafica");
+            // Las etiquetas son las que van en el eje X. 
+            const etiquetas = ["Enero", "Febrero", "Marzo", "Abril"]
+            // Podemos tener varios conjuntos de datos. Comencemos con uno
+            const datosVentas2020 = {
+                label: "",
+                data: [5000, 1500, 8000, 5102], // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+                borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
+                borderWidth: 1,// Ancho del borde
+            };
+            new Chart($grafica, {
+                type: 'bar',// Tipo de gráfica
+                data: {
+                    labels: etiquetas,
+                    datasets: [
+                        datosVentas2020,
+                        // Aquí más datos...
+                    ]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                    },
+                }
+            });
+            </script>
+  <script>
+
+    // Obtener una referencia al elemento canvas del DOM
+  const $grafica2 = document.querySelector("#grafica2");
+  // Las etiquetas son las que van en el eje X. 
+  const etiquetas2 = ["Nancy", "Pamela", "Sergio"]
+  // Podemos tener varios conjuntos de datos. Comencemos con uno
+  const datosVentas2022 = {
+      label: "",
+      data: [5000, 1500, 8000], // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+      backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+      borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
+      borderWidth: 1,// Ancho del borde
+  };
+  new Chart($grafica2, {
+      type: 'bar',// Tipo de gráfica
+      data: {
+          labels: etiquetas2,
+          datasets: [
+              datosVentas2022,
+              // Aquí más datos...
+          ]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }],
+          },
+      }
+  });
+  </script>            
+</body>
+</html>

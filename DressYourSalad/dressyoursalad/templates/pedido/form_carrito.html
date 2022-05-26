@@ -60,9 +60,21 @@
                                
                 </th>
                 <th scope="col">&nbsp;</th>
-                <th scope="col">Total Carrito</th>
-                <th scope="col">${{total.precio__sum}}</th>
-                <th scope="col"><a href="{% url 'reservar_carrito' IdCarrito %}" class="btn btn-danger" id="btnprueba">Confirmar Pedido</a></th>
+                <th scope="col">
+                  {% if total.precio__sum is not None %} 
+                    Total Carrito ${{total.precio__sum}}
+                  {% endif %}
+                  {% if total.precio__sum is None %} 
+                    Total Carrito $0
+                  {% endif %}
+                </th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">
+                  {% if total.precio__sum is not None %} 
+                  <a href="{% url 'reservar_carrito' IdCarrito %}" class="btn btn-danger" id="btnprueba">
+                    Confirmar Pedido</a>
+                    {% endif %}
+                  </th>
             </tr>
             <tr>
               <!--<th scope="col">Código pedido</th>-->
@@ -102,40 +114,37 @@
 
 
     </div>
-
-        <br><br><br><br><br><br>   
-        <br><br><br><br><br><br> <br>
-
-
-
-        <footer class="pie-pagina">
-          <div class="grupo-1">
-              <div class="box">
-                <br><br>
-                <img src="{% static 'img/logo.jpg'%}" id="borde"     width="100px" height="100px">
-              </div>
-              <div class="box">
-                  <h2 class="relleno">SOBRE NOSOTROS</h2>
-                  <p class="textojustificado">DressYourSalad es un pyme que esta en crecimiento, en donde nace la idea de comer sano y a la falta opciones de comida saludable en el mercado</p>
-                  <p class="textojustificado">Como misión nuesta empresa contempla  3 objetivos, las cuales son: promover una cultura del buen comer, ofrecer a nuestros clientes satisfacion de nuestros platos y ofrecer un servicio de calidad</p>
-              </div>
-              <div class="box">
-                  <h2 class="relleno">SIGUENOS</h2>
-                  <br>
-                  <div class="red-social">
-                      <a href="#" class="fa fa-facebook"></a>
-                      <a href="#" class="fa fa-instagram"></a>
-                      <a href="#" class="fa fa-twitter"></a>
-                      <a href="#" class="fa fa-youtube"></a>
-                      <br><br><br><br>
-                      <img src="{% static 'img/nombreEmpresa.jpeg'%}"  id="nombreEmpresa">
-                  </div>
+    
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    
+    <footer class="pie-pagina">
+      
+      <div class="grupo-1">
+          <div class="box">                
+            <img src="{% static 'img/nombreEmpresa.jpeg'%}" id="borde"     width="100px" height="100px">
+          </div>
+          <div class="box">
+              <h2 class="relleno">SOBRE NOSOTROS</h2>
+              <p class="textojustificado">Nuestra misión es promover una cultura de la comida saludable y ofrecer a nuestros clientes un servicio de calidad.</p>
+          </div>
+          <div class="box">
+              <h2 class="relleno">SIGUENOS</h2>
+              <br>
+              <div class="red-social">
+                  <a href="#" class="fa fa-facebook"></a>
+                  <a href="#" class="fa fa-instagram"></a>
+                  <a href="#" class="fa fa-twitter"></a>
+                  <a href="#" class="fa fa-youtube"></a>
+                  
               </div>
           </div>
-          <div class="grupo-2">
-              <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
-          </div>
-      </footer>
+      </div>
+      <div class="grupo-2">
+          <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
+      </div>
+  </footer>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

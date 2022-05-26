@@ -27,23 +27,24 @@
           <li class="nav-item " >                  
             <h3 style="text-align: center">DressYourSalad</h3>
           </li>          
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
-          </li>          
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
-          </li> 
-               
-        </ul>  
+          <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a>
+        </li> 
+        <li class="nav-item">
+          <b><u><a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a></u></b>
+        </li>          
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+        </li>                 
+        </ul> 
       </div>
         <!-- insertar botones -->     
   </nav>           

@@ -31,13 +31,16 @@
           <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a>
+        </li> 
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
         </li>          
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
+          <b><u><a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a></u></b>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
@@ -83,13 +86,20 @@
                       {% endif %}
                     </td>
                     <td>
+
+                                  
+                  
+
                       {% if pedido.entregado %}
                         <a href="{% url 'form_noentregado' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Entregado</a>
                       {% else %}
                         <a href="{% url 'form_entregado' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Entregar</a>
                       {% endif %}
+
+                   
+
                     </td>
-                    <td><a href="{% url 'form_boleta2' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Ingresar boleta</a></td>
+                    
                 </tr>
             {%endfor%}
         </tbody>        
