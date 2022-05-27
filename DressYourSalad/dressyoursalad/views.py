@@ -3,6 +3,7 @@ from .models import Bowl, Pedido, Carrito
 from .forms import BowlForm, PedidoForm, UserRegisterForm, BoletaForm
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.db import connection
 import pandas as pd 
 import numpy as np
 
@@ -29,18 +30,53 @@ def index(request):
 
 def dashboard(request):
     
-    #bowls= Bowl.objects.all()
-    bowlsBD = Bowl.objects.values_list('nom_Bowl', flat=True).order_by('cod_Bowl')
-    labelsBowls = list(bowlsBD)
+    labelsBowls1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select  nom_Bowl, sum(cantidad) from dressyoursalad_pedido,  dressyoursalad_bowl where pagado = 1 and cod_bowl = bowl_id group by bowl_id, nom_Bowl order by 2 desc  FETCH FIRST 4 ROWS ONLY")
+        cursor1 = cursor.fetchall()
+        for row1 in cursor1:
+            labelsBowls1.append(list(row1))
+    labelsBowls = list(labelsBowls1)
 
-    DataBowls = []
+    DataBowls1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select   sum(cantidad) from dressyoursalad_pedido where pagado = 1 group by bowl_id  order by 1 desc  FETCH FIRST 4 ROWS ONLY ")
+        cursor2 = cursor.fetchall()
+        for row2 in cursor2:
+            DataBowls1.append(list(row2))
+    DataBowls = list(DataBowls1)
 
-    queryset = Pedido.objects.values('bowl_id').annotate(venta=Sum('cantidad')).filter(pagado=True).order_by('bowl_id')
-    
-    for entry in queryset:
-        DataBowls.append(entry['venta'])
-    
-    return render(request, 'admin/dashboard.html', {'labelsBowls':labelsBowls, 'DataBowls':DataBowls})
+    labelsClientes1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select  username, count(*) FROm dressyoursalad_carrito,  auth_user where pagado = 1 and user_id = auth_user.id group by user_id, username order by 2 desc  FETCH FIRST 3 ROWS ONLY")
+        cursor3 = cursor.fetchall()
+        for row3 in cursor3:
+            labelsClientes1.append(list(row3))
+    labelsClientes = list(labelsClientes1)
+
+    DataClientes2=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select   count(*) FROm dressyoursalad_carrito,  auth_user where pagado = 1 and user_id = auth_user.id group by user_id, username order by 1 desc  FETCH FIRST 3 ROWS ONLY")
+        cursor4 = cursor.fetchall()
+        for row4 in cursor4:
+            DataClientes2.append(list(row4))
+    DataClientes = list(DataClientes2)
+
+    DataVentas1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select  to_char(TO_DATE(TRUNC(fecha_ped))), count(*) from dressyoursalad_carrito where pagado = 1 group by trunc(fecha_ped) order by 2 desc  FETCH FIRST 3 ROWS ONLY")
+        cursor5 = cursor.fetchall()
+        for row5 in cursor5:
+            DataVentas1.append(list(row5))
+    DataVentas2 = list(DataVentas1)    
+    LabelsVentas = []
+    DataVentas = []
+    for x,y in  DataVentas2:
+       LabelsVentas.append(x.replace(' 00:00:00','')) 
+       DataVentas.append(y) 
+       
+   
+    return render(request, 'admin/dashboard.html', {'labelsBowls':labelsBowls, 'DataBowls':DataBowls, 'labelsClientes':labelsClientes,'DataClientes':DataClientes,'LabelsVentas':LabelsVentas, 'DataVentas':DataVentas})
 
 
 def pago(request):   

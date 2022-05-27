@@ -29,8 +29,7 @@
             <li class="nav-item " >                  
               <h3 style="text-align: center">DressYourSalad</h3>
             </li>          
-            <a class="nav-link" href="{% url 'index' %}">Ir a la página principal</a>
-          </li>
+            
           <li class="nav-item">
             <b><u><a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a></u></b>
           </li> 
@@ -55,31 +54,36 @@
         <h3>DASHBOARD</h3>
     <div class="linea"></div>
     <div class="container">   
-      <h3>Proteína, el ingrediente base en tu bowl</h3>
+     
       <br>
       <div class="row">       
         <div class="col-md">        
             <div class="card">
-                 <center><h2>El más vendido!</h2></center>
+                 <center><h2>El Bowl más vendido!</h2></center>
                 <canvas id="myChart" style="margin-bottom: 30px; width: 50%; height: 50%;"></canvas>
             </div>
         </div>
         <div class="col-md">        
           <div class="card">
-            <center><h2>Ventas x Mes</h2></center>
+            <center><h2>Ventas ultimos 3 días!</h2></center>
             <canvas id="grafica" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
           </div>
       </div> 
       <br> 
       <div class="col-md">        
         <div class="card">
-          <center><h2>Ranking Clientes</h2></center>
+          <center><h2>Top 3 - Ranking Clientes</h2></center>
           <canvas id="grafica2" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
         </div>
     </div>       
       </div>
     </div>  
-      
+    <!--labelsBowls:{{labelsBowls}}<br>
+    DataBowls:{{DataBowls}}<br>
+    labelsClientes:{{labelsClientes}}<br>
+    DataClientes:{{DataClientes}}<br>
+    LabelsVentas:{{LabelsVentas}}<br>
+    DataVentas:{{DataVentas}}-->
       
       
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -98,25 +102,25 @@
                 data:{
               datasets: [{
                 data: {{DataBowls|safe}} ,
-                backgroundColor: ['#42a5f5', 'red', 'green','blue','violet'],
+                backgroundColor: [ 'yellow', 'green','blue','violet'],
                 label: 'El más vendido'}],
                 labels: {{labelsBowls|safe}}
               },
                 options: {responsive: true}
             });
             </script>
-          {% endblock %}
+         
             <script>
 
               // Obtener una referencia al elemento canvas del DOM
             const $grafica = document.querySelector("#grafica");
             // Las etiquetas son las que van en el eje X. 
-            const etiquetas = ["Enero", "Febrero", "Marzo", "Abril"]
+            const etiquetas = {{LabelsVentas|safe}}
             // Podemos tener varios conjuntos de datos. Comencemos con uno
             const datosVentas2020 = {
                 label: "",
-                data: [5000, 1500, 8000, 5102], // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
-                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+                data:{{DataVentas|safe}}, // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+                backgroundColor: '#70BF3F', // Color de fondo
                 borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
                 borderWidth: 1,// Ancho del borde
             };
@@ -145,11 +149,11 @@
     // Obtener una referencia al elemento canvas del DOM
   const $grafica2 = document.querySelector("#grafica2");
   // Las etiquetas son las que van en el eje X. 
-  const etiquetas2 = ["Nancy", "Pamela", "Sergio"]
+  const etiquetas2 = {{labelsClientes|safe}}
   // Podemos tener varios conjuntos de datos. Comencemos con uno
   const datosVentas2022 = {
       label: "",
-      data: [5000, 1500, 8000], // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+      data:{{DataClientes|safe}}, // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
       backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
       borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
       borderWidth: 1,// Ancho del borde
@@ -173,6 +177,7 @@
           },
       }
   });
-  </script>            
+  </script>
+   {% endblock %}           
 </body>
 </html>
