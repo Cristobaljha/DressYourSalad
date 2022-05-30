@@ -105,7 +105,7 @@
                     <td>${{pedidos2.precio}}</td>
                     <td><a href="{% url 'form_eliminar_carrito' pedidos2.cod_ped IdCarrito%}" class="btn btn-danger" id="btnprueba">Eliminar</a></td>
                 </tr>
-              
+            {% endfor %}
                 
         </tbody>        
       </table>

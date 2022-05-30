@@ -78,7 +78,7 @@ class PedidoForm(forms.ModelForm):
         }
         widgets={
             
-            'cantidad': forms.TextInput(
+            'cantidad': forms.NumberInput(
                 attrs={
                     'class': 'form-control', 
                     'id': 'cantidad'
@@ -102,7 +102,7 @@ class BoletaForm(forms.ModelForm):
                 
         widgets={
             
-            'boleta': forms.TextInput(
+            'boleta': forms.NumberInput(
                 attrs={
                     'class': 'form-control', 
                     'id': 'boleta',

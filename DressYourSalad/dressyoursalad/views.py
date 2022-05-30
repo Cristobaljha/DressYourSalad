@@ -16,7 +16,7 @@ Carro_Activo = 1
 def carritoActivo(user):
 	global IdCarrito, Carro_Activo
 	IdCarrito = Pedido.objects.all().aggregate(Max('id_carrito'))
-	Carro_Activo = Pedido.objects.all().filter(pagado=False).filter(user_id=user).filter(reservado=0).aggregate(Max('id_carrito'))
+	Carro_Activo = Pedido.objects.all().filter(pagado=False).filter(user_id=user.id).filter(reservado=0).aggregate(Max('id_carrito'))
 
 def index(request):
     try:
@@ -179,9 +179,9 @@ def form_pedido(request):
                     bowl.cant_Bowl = bowl.cant_Bowl - int(ped_form['cantidad'].value())
                     pedido = Pedido(cantidad=ped_form['cantidad'].value(), bowl_id=ped_form['bowl'].value(), user_id=user.id,precio = (bowl.precio_Bowl*int(ped_form['cantidad'].value())), id_carrito=ped_form['id_carrito'].value())
                     pedido.save()
-                    idPed = bowl.save()
+                    bowl.save()
                     
-                    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False).filter(reservado=0)
+                    pedidos = Pedido.objects.select_related().all().filter(id_carrito=ped_form['id_carrito'].value()).filter(pagado=False).filter(reservado=0).order_by('-cod_ped')
                     total = Pedido.objects.all().filter(id_carrito=ped_form['id_carrito'].value()).aggregate(Sum('precio'))
                     
                     pedido3 = Pedido.objects.filter(user_id=user.id).latest('cod_ped')
@@ -234,7 +234,7 @@ def form_eliminar_carrito (request,id,id2):
 
     user = User.objects.get(username=request.user)
 
-    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(pagado=False).filter(reservado=0)
+    pedidos = Pedido.objects.select_related().all().filter(id_carrito=id2).filter(pagado=False).filter(reservado=0).order_by('-cod_ped')
     total = Pedido.objects.all().filter(id_carrito=id2).aggregate(Sum('precio'))
     return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':id2, 'user_id':user.id, 'nombre_user': user.username})    
 
@@ -333,4 +333,25 @@ def form_boleta(request,id):
             return redirect('form_ver_pedidos')
     
     return render(request, 'admin/form_modificar_pedidos.html', datos)
+
+def form_reportevtas(request):   
+
+    DataVentas1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select  to_char(TO_DATE(TRUNC(fecha_ped))) from dressyoursalad_carrito where pagado = 1 group by trunc(fecha_ped) order by 1 desc")
+        cursor5 = cursor.fetchall()
+        for row5 in cursor5:
+            DataVentas1.append(list(row5))
+    DataVentas2 = list(DataVentas1)    
+    FechaVtas = []
+    for x in  DataVentas2:
+       txt = x[0]     
+       spl = txt.split(" ")
+       txt2 = spl[0]
+       txt3 = txt2.replace("['","")
+       FechaVtas.append(txt3)
+
+
+    pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=True)
+    return render(request, 'admin/form_reportevtas.html', {'pedidos':pedidos, 'FechaVtas':FechaVtas})
 
