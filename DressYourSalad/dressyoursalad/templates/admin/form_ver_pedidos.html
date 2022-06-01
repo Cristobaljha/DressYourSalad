@@ -9,7 +9,16 @@
     <link rel="stylesheet" type="text/css" href="{%static 'css/estilos.css'%}">
     <title>Ver</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
+    <script>
+      function IngresaBoleta(id_carrito){
+             boleta = document.getElementById('boleta_'+id_carrito).value;
+             if(boleta == 0){
+               alert("Favor ingrese una boleta");
+             }else{
+                window.location.href="/form_ver_pedidos/"+boleta+"/"+id_carrito;
+             }
+      }
+      </script>
 </head>
 <body>
     <!-- navbar -->
@@ -36,11 +45,14 @@
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
         </li>          
         <li class="nav-item">
-          <b><u><a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a></u></b>
+          <b><u><a class="nav-link" href="{% url 'form_ver_pedidos' 0 0 %}">Pendiente de Pago</a></u></b>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_reportevtas' 'hoy' %}">Reporte de Ventas</a>
+        </li>  
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
         </li>                 
@@ -64,7 +76,6 @@
                 <th scope="col">Cantidad Total</th> 
                 <th scope="col">Precio Total</th>
                 <th scope="col">Estado de Pago</th>
-                <th scope="col">Estado de Entrega</th>
                 
             </tr>
         </thead>
@@ -72,30 +83,11 @@
             {%for pedido in pedidos%}
                 <tr>
                     <td>{{pedido.id_carrito}}</td>
-                    <td>{{pedido.boleta}}</td>
+                    <td><input type="number" placeholder="Ingrese Boleta" value="{{pedido.boleta}}" name="boleta_{{pedido.id_carrito}}" id="boleta_{{pedido.id_carrito}}" size="5" maxlength="25" required></td>
                     <td>{{pedido.fecha_ped}}</td>
                     <td>{{pedido.cantidad}}</td> 
                     <td>${{pedido.precio}}</td>
-                    <td>
-                      {% if pedido.boleta != 0 %} 
-
-                      <a href="{% url 'form_pagado' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Pagar</a></td>
-                      {% endif %}
-                      <td>      
-                      
-                      {% if pedido.entregado %}
-                        Entregado
-                      {% else %}
-                        No Entregado
-                      {% endif %} 
-  
-
-                    </td>
-                    {% if pedido.boleta == 0 %} 
-
-                    <td><a href="{% url 'form_boleta' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Ingresar boleta</a></td>
-                    
-                    {% endif %}
+                    <td><input type="button" onclick="IngresaBoleta('{{pedido.id_carrito}}')" class="btn btn-primary" id="btnprueba" value="Pagar"></td>
                   </tr>
             {%endfor%}
         </tbody>        

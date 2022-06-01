@@ -35,11 +35,14 @@
           <b><u><a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a></u></b>
         </li>          
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
+          <a class="nav-link" href="{% url 'form_ver_pedidos' 0 0%}">Pendiente de Pago</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_reportevtas' 'hoy' %}">Reporte de Ventas</a>
+        </li>  
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
         </li>                 
@@ -52,7 +55,10 @@
     <div class="galeria">
         <h3>Mantenedor Bowls</h3>
         <div class="linea"></div>
+      
     <div class="container">
+      <a href="{% url 'form_crear' %}" class="btn btn-primary" id="btnprueba">Agregar Nuevo Bowl</a>
+      <br><br><br>
     <table class="table">
         <thead>
             <tr>
@@ -61,7 +67,9 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Descripción</th>
+                <th scope="col">Imágen</th>
                 <th scope="col">Stock Disponible</th>
+            
           
 
             </tr>
@@ -73,6 +81,7 @@
                     <td>{{bo.nom_Bowl}}</td>
                     <td>${{bo.precio_Bowl}}</td>
                     <td>{{bo.descripcion_Bowl}}</td>
+                    <td><img src="/static/img/{{bo.estado_stock}}" width="70px"></td>
                     <td>{{bo.cant_Bowl}}</td>
                 
                     <td><a href="{% url 'form_modificar' bo.cod_Bowl%}" class="btn btn-primary" id="btnprueba">Modificar  </a>
@@ -83,8 +92,7 @@
         </tbody>
 
     </table>
-    <a href="{% url 'form_crear' %}" class="btn btn-primary" id="btnprueba">Agregar Nuevo Bowl</a>
-    <br><br><br>
+
     </div>
     
 

@@ -37,13 +37,13 @@
             <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
           </li>          
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_ver_pedidos' %}">Pendiente de Pago</a>
+            <a class="nav-link" href="{% url 'form_ver_pedidos' 0 0 %}">Pendiente de Pago</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'form_ver_pagados'%}">Pendiente de entrega</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'form_reportevtas'%}">Reporte de Ventas</a>
+            <a class="nav-link" href="{% url 'form_reportevtas' 'hoy' %}">Reporte de Ventas</a>
           </li>          
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
@@ -54,7 +54,7 @@
     </nav>      
     <br><br><br><br>
     <div class="galeria">
-        <h3>DASHBOARD</h3>
+        <h3>GRÁFICO DE MÉTRICAS</h3>
     <div class="linea"></div>
     <div class="container">   
      
@@ -68,7 +68,7 @@
         </div>
         <div class="col-md">        
           <div class="card">
-            <center><h2>Ventas ultimos 3 días!</h2></center>
+            <center><h2>Ventas últimos 3 días!</h2></center>
             <canvas id="grafica" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
           </div>
       </div> 

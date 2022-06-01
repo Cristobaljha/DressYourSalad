@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import connection
 import pandas as pd 
 import numpy as np
+from datetime import datetime
 
 from django.db.models import Max, Sum
 
@@ -15,8 +16,8 @@ Carro_Activo = 1
 
 def carritoActivo(user):
 	global IdCarrito, Carro_Activo
-	IdCarrito = Pedido.objects.all().aggregate(Max('id_carrito'))
-	Carro_Activo = Pedido.objects.all().filter(pagado=False).filter(user_id=user.id).filter(reservado=0).aggregate(Max('id_carrito'))
+	IdCarrito = Carrito.objects.all().aggregate(Max('id_carrito'))
+	Carro_Activo = Carrito.objects.all().filter(pagado=False).filter(user_id=user.id).aggregate(Max('id_carrito'))
 
 def index(request):
     try:
@@ -24,7 +25,8 @@ def index(request):
         if not user.is_superuser:
             return render(request, 'index.html', {'user_id':user.id, 'nombre_user':user.username, 'superuser':user.is_superuser})
         else:
-            return render(request, 'admin/dashboard.html')
+            #return render(request, 'admin/dashboard.html')
+            return redirect('dashboard')
     except:
             return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
@@ -132,17 +134,22 @@ def form_bowls(request):
     return render(request, 'admin/form_pedido.html', {'bowls2':bowls2})
 
 def seguir_comprando(request, id):
-    
-    user = User.objects.get(username=request.user)
-    bowls2 = Bowl.objects.select_related().all() 
-    #return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user})
-    return redirect('../form_pedido', {'bowls2':bowls2, 'user':user, 'IdCarrito':id})
+    try:
+        user = User.objects.get(username=request.user)
+        bowls2 = Bowl.objects.select_related().all() 
+        #return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user})
+        return redirect('../form_pedido', {'bowls2':bowls2, 'user':user, 'IdCarrito':id})
+    except:
+        return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
 def ver_carrito(request, id):
-    user = User.objects.get(username=request.user)
-    pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(id_carrito=id)
-    total = Pedido.objects.all().filter(id_carrito=id).aggregate(Sum('precio'))
-    return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':id, 'user_id':user.id, 'nombre_user': user.username})
+    try:
+        user = User.objects.get(username=request.user)
+        pedidos = Pedido.objects.select_related().all().order_by('-cod_ped').filter(id_carrito=id).filter(reservado=0)
+        total = Pedido.objects.all().filter(id_carrito=id).filter(reservado=0).aggregate(Sum('precio'))
+        return render(request, 'pedido/form_carrito.html', {'pedidos':pedidos, 'total':total, 'IdCarrito':id, 'user_id':user.id, 'nombre_user': user.username})
+    except:
+        return render(request, 'index.html', {'user_id':0, 'nombre_user':''})
 
 def form_pedido(request):
     try:
@@ -157,8 +164,11 @@ def form_pedido(request):
             if(Carro_Activo['id_carrito__max']  is None):
                 Carro_Activo['id_carrito__max'] = IdCarrito['id_carrito__max'] + 1   
         IdCarritoActivo =  Carro_Activo['id_carrito__max']
-        items_carrito = Pedido.objects.filter(id_carrito=IdCarritoActivo).count()
-
+        items_carrito = Pedido.objects.filter(id_carrito=IdCarritoActivo).filter(reservado=0).count()
+        items_carrito2 = Pedido.objects.filter(id_carrito=IdCarritoActivo).filter(reservado=1).count()
+        if items_carrito2 > 0:
+           Carro_Activo['id_carrito__max'] = IdCarrito['id_carrito__max'] + 1  
+           IdCarritoActivo =  Carro_Activo['id_carrito__max']
 
         if request.method=='POST':
             ped_form = PedidoForm(request.POST)
@@ -167,13 +177,17 @@ def form_pedido(request):
             if ped_form.is_valid():
                 bowl = Bowl.objects.get(cod_Bowl=ped_form['bowl'].value())
                 bowls2 = Bowl.objects.select_related().all() 
-
-                carritoActivo(user)
-                if bowl.cant_Bowl < int(ped_form['cantidad'].value()):
-                    #return redirect('form_pedido', error='error')
+                if int(ped_form['cantidad'].value()) <= 0:
                     ped_form=PedidoForm()
                     user = User.objects.get(username=request.user)
-                    return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user, 'error':True, 'IdCarrito': IdCarritoActivo, 'Id_Bowl': bowl.cod_Bowl})
+                    return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user, 'error2':True, 'IdCarrito': IdCarritoActivo, 'Id_Bowl': bowl.cod_Bowl, 'user_id':user.id, 'nombre_user': user.username})
+                
+
+               
+                if bowl.cant_Bowl < int(ped_form['cantidad'].value()):
+                    ped_form=PedidoForm()
+                    user = User.objects.get(username=request.user)
+                    return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2, 'ped_form':ped_form, 'user':user, 'error':True, 'IdCarrito': IdCarritoActivo, 'Id_Bowl': bowl.cod_Bowl, 'user_id':user.id, 'nombre_user': user.username})
                 else:
                     
                     bowl.cant_Bowl = bowl.cant_Bowl - int(ped_form['cantidad'].value())
@@ -253,7 +267,14 @@ def registro(request):
 	context = { 'form' : form } 
 	return render(request, 'loginadmin/registro.html', context)
 
-def form_ver_pedidos(request): 
+def form_ver_pedidos(request, boleta, id_carrito): 
+    if request.method == 'GET':
+        if int(boleta) > 0:
+            pedido = Carrito.objects.get(id_carrito=id_carrito)
+            pedido.pagado = True
+            pedido.boleta = boleta
+            pedido.save()  
+    
 
     pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
@@ -304,37 +325,14 @@ def reservar_carrito(request, id):
 
     return render(request, 'pago.html', {'IdCarrito':id, 'total':total})
 
-def form_boleta2(request,id):
-    pedido = Pedido.objects.get(cod_ped=id)
-    
-    datos ={
-        'form': BoletaForm(instance=pedido)
-    }
-    if request.method == 'POST': 
-        
-        formulario = BoletaForm(data=request.POST, instance = pedido)
-        if formulario.is_valid: 
-            formulario.save()
-            return redirect('form_ver_pagados')
-    
-    return render(request, 'admin/form_modificar_pedidos.html', datos)
 
-def form_boleta(request,id):
-    carrito = Carrito.objects.get(id_carrito=id)
+def form_reportevtas(request, dia): 
     
-    datos ={
-        'form': BoletaForm(instance=carrito)
-    }
-    if request.method == 'POST': 
-        
-        formulario = BoletaForm(data=request.POST, instance = carrito)
-        if formulario.is_valid: 
-            formulario.save()
-            return redirect('form_ver_pedidos')
-    
-    return render(request, 'admin/form_modificar_pedidos.html', datos)
-
-def form_reportevtas(request):   
+    if request.method == 'GET': 
+        if dia == 'hoy':
+           diaX = datetime.today().strftime('%d-%m-%Y')
+        else:
+           diaX = dia
 
     DataVentas1=[]
     with connection.cursor() as cursor:
@@ -345,13 +343,28 @@ def form_reportevtas(request):
     DataVentas2 = list(DataVentas1)    
     FechaVtas = []
     for x in  DataVentas2:
-       txt = x[0]     
-       spl = txt.split(" ")
-       txt2 = spl[0]
-       txt3 = txt2.replace("['","")
-       FechaVtas.append(txt3)
+        txt = x[0]     
+        spl = txt.split(" ")
+        txt2 = spl[0]
+        sp2 = txt2.split("-")
+        txt3 = sp2[2]+'-'+sp2[1]+'-'+sp2[0]
+        FechaVtas.append(txt3)
+    
+    pedidos1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select id_carrito, boleta, cantidad, precio, pagado, entregado from dressyoursalad_carrito where pagado = 1  and trunc(fecha_ped) = TO_DATE('"+ diaX +"','DD/MM/YYYY') ")
+        cursor6 = cursor.fetchall()
+        for row6 in cursor6:
+            pedidos1.append(list(row6))
+    pedidos2 = list(pedidos1)   
+ 
+    Total=[]
+    with connection.cursor() as cursor:
+        cursor.execute("Select sum(precio) from dressyoursalad_carrito where pagado = 1  and trunc(fecha_ped) = TO_DATE('"+ diaX +"','DD/MM/YYYY') ")
+        cursor7 = cursor.fetchall()
+        for row7 in cursor7:
+            Total.append(list(row7))
+    TotalDia = list(Total)  
 
-
-    pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=True)
-    return render(request, 'admin/form_reportevtas.html', {'pedidos':pedidos, 'FechaVtas':FechaVtas})
+    return render(request, 'admin/form_reportevtas.html', {'TotalDia':TotalDia, 'pedidos':pedidos2, 'FechaVtas':FechaVtas, 'dia':diaX})
 

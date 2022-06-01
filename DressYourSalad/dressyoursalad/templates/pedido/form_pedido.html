@@ -8,6 +8,7 @@
       <link rel="stylesheet" type="text/css" href="{%static 'css/estilos.css'%}">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
       <link rel="stylesheet" href="cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
       <title>DressYourSalad &copy; Arma tu Pedido!</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script>
@@ -96,12 +97,17 @@
                     {% if bo.cant_Bowl == 0 %}       
                      <h4>Producto No Disponible       </h4>
                      {% else %}
-                     {% if error %}
-                      {% if Id_Bowl == bo.cod_Bowl%}
-                      Cantidad ingresada supera al stock : {{bo.cant_Bowl}}       
-                      {% endif %}
-                     {% endif %}
-                      Cantidad: <input type="number" name="cantidad" id="cantidad" size="5" maxlength="25" required>
+                        {% if error %}
+                            {% if Id_Bowl == bo.cod_Bowl%}
+                            <span style="color:red" >Cantidad ingresada supera al stock : {{bo.cant_Bowl}}! </span>
+                            {% endif %}
+                        {% endif %}
+                        {% if error2 %}
+                            {% if Id_Bowl == bo.cod_Bowl%}
+                            <span style="color:red">Cantidad ingresada debe ser mayor a 0!</span>     
+                            {% endif %}
+                        {% endif %}
+                      <input type="number" placeholder="Ingrese Cantidad" name="cantidad" id="cantidad" size="5" maxlength="25" required>
                       <input type="submit" class="btn btn-danger" id="btnprueba" value="Agregar al Carrito">
                     {% endif %}
                     <br>Stock Disponible: {{bo.cant_Bowl}}

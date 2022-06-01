@@ -34,7 +34,7 @@ class BowlForm(forms.ModelForm):
                     'id': 'nom_Bowl'
                 }
             ), 
-            'precio_Bowl': forms.TextInput(
+            'precio_Bowl': forms.NumberInput(
                 attrs={
                     'class': 'form-control', 
                     'placeholder': 'Ingrese precio', 
@@ -49,7 +49,7 @@ class BowlForm(forms.ModelForm):
                 }
             ), 
         
-            'cant_Bowl': forms.TextInput(
+            'cant_Bowl': forms.NumberInput(
                 attrs={
                     'class': 'form-control',
                     'placeholder': 'Ingrese stock', 
