@@ -12,9 +12,13 @@
     <script>
       function IngresaBoleta(id_carrito){
              boleta = document.getElementById('boleta_'+id_carrito).value;
-             if(boleta == 0){
+             if(boleta == ""){
                alert("Favor ingrese una boleta");
-             }else{
+             }
+             else if(boleta <= 0){
+               alert("Favor ingrese un número mayor a 0");
+             }
+             else{
                 window.location.href="/form_ver_pedidos/"+boleta+"/"+id_carrito;
              }
       }
@@ -44,6 +48,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
         </li>          
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_buscar_pedidos' 0 %}">Mantenedor Pedidos</a>
+        </li>   
         <li class="nav-item">
           <b><u><a class="nav-link" href="{% url 'form_ver_pedidos' 0 0 %}">Pendiente de Pago</a></u></b>
         </li>

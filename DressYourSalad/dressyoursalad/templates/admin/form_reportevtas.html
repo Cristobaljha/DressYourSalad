@@ -8,7 +8,7 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="{%static 'css/estilos.css'%}">
     <title>Ver</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" >
 <script>
 function ReporteVentas(dia){
 
@@ -40,6 +40,9 @@ function ReporteVentas(dia){
         </li> 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
+        </li>            
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'form_buscar_pedidos' 0 %}">Mantenedor Pedidos</a>
         </li>          
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver_pedidos' 0 0 %}">Pendiente de Pago</a>

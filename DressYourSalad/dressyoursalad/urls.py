@@ -1,5 +1,5 @@
 from django.urls import URLPattern, path
-from .views import index,pago, form_crear, form_modificar,form_eliminar,form_ver, registro, form_pedido, reservar_carrito, seguir_comprando, ver_carrito,form_ver_pedidos, form_eliminar_carrito, form_entregado, form_pagado, form_nopagado, dashboard, form_noentregado, form_ver_pagados,form_reportevtas, form_bowls
+from .views import index,pago, form_crear, form_modificar,form_eliminar,form_ver, registro, form_pedido, reservar_carrito, seguir_comprando, ver_carrito,form_ver_pedidos, form_eliminar_carrito, form_entregado, form_pagado, form_nopagado, dashboard, form_noentregado, form_ver_pagados,form_reportevtas, form_buscar_pedidos, form_update_pedido, form_bowls
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -23,6 +23,8 @@ urlpatterns = [
     path('form_ver_pedidos/<boleta>/<id_carrito>', form_ver_pedidos, name="form_ver_pedidos"),
     path('form_ver_pagados', form_ver_pagados, name="form_ver_pagados"),
     path('form_reportevtas/<dia>', form_reportevtas, name="form_reportevtas"),
+    path('form_buscar_pedidos/<id_c>', form_buscar_pedidos, name="form_buscar_pedidos"),
+    path('form_update_pedido/<id_c>/<boleta>/<pagado>/<entregado>', form_update_pedido, name="form_update_pedido"),
 
     path('form_entregado/<id>', form_entregado, name="form_entregado"),
     path('form_noentregado/<id>', form_noentregado, name="form_noentregado"),

@@ -67,6 +67,61 @@ class BowlForm(forms.ModelForm):
 
         }
 
+class BowlForm2(forms.ModelForm):
+    
+    class Meta:
+        model = Bowl
+        fields = ['nom_Bowl', 'precio_Bowl', 'descripcion_Bowl', 'cant_Bowl', 'estado_stock']
+        labels ={
+            
+            'nom_Bowl': 'Nombre', 
+            'precio_Bowl': 'Precio', 
+            'descripcion_Bowl': 'Descripcion',
+            'cant_Bowl': 'Cantidad',
+            'estado_stock': 'Imagen',
+        }
+        widgets={
+            
+            'nom_Bowl': forms.TextInput(
+                attrs={
+                    'class': 'form-control', 
+                    'placeholder': 'Ingrese nombre', 
+                    'id': 'nom_Bowl'
+                }
+            ), 
+            'precio_Bowl': forms.NumberInput(
+                attrs={
+                    'class': 'form-control', 
+                    'placeholder': 'Ingrese precio', 
+                    'id': 'precio_Bowl'
+                }
+            ), 
+            'descripcion_Bowl': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese descripción', 
+                    'id': 'descripcion_Bowl',
+                }
+            ), 
+        
+            'cant_Bowl': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese stock', 
+                    'id': 'cant_Bowl',
+                }
+            ), 
+            'estado_stock': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Ingrese imagen', 
+                    'id': 'estado_stock',
+                }
+            )
+
+
+        }
+
 class PedidoForm(forms.ModelForm):
     
     class Meta:

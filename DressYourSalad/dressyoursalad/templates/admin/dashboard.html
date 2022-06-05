@@ -37,6 +37,9 @@
             <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
           </li>          
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'form_buscar_pedidos' 0 %}">Mantenedor Pedidos</a>
+          </li>   
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'form_ver_pedidos' 0 0 %}">Pendiente de Pago</a>
           </li>
           <li class="nav-item">
@@ -68,7 +71,7 @@
         </div>
         <div class="col-md">        
           <div class="card">
-            <center><h2>Ventas últimos 3 días!</h2></center>
+            <center><h2>Los dias con más ventas!</h2></center>
             <canvas id="grafica" style="margin-bottom: 30px; width: 60%; height: 60%;"></canvas>
           </div>
       </div> 

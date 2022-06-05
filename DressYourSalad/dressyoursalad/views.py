@@ -274,6 +274,9 @@ def form_ver_pedidos(request, boleta, id_carrito):
             pedido.pagado = True
             pedido.boleta = boleta
             pedido.save()  
+
+            Pedido.objects.filter(id_carrito=id_carrito).update(pagado=True)
+            Pedido.objects.filter(id_carrito=id_carrito).update(boleta=boleta)
     
 
     pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
@@ -325,6 +328,43 @@ def reservar_carrito(request, id):
 
     return render(request, 'pago.html', {'IdCarrito':id, 'total':total})
 
+def form_buscar_pedidos(request, id_c): 
+    CarritoBD=""
+    pedidos=""
+    CarritoError = "0"
+
+    if  id_c != '0':     
+        CarritoBD2= Carrito.objects.all().filter(id_carrito=id_c)
+        if(CarritoBD2):
+            CarritoBD = Carrito.objects.get(id_carrito=id_c)
+            pedidos = Pedido.objects.select_related().all().filter(id_carrito=id_c)
+        else:
+            CarritoError = "1"
+            
+
+    return render(request, 'admin/form_buscar_pedidos.html',{'id_carrito':id_c,'pedidos':pedidos,'CarritoBD':CarritoBD,'CarritoError':CarritoError})
+
+def form_update_pedido(request, id_c,boleta,pagado,entregado):
+    CarritoError = "0"
+    updateOK = "0"
+
+    carrito = Carrito.objects.get(id_carrito=id_c)
+    carrito.pagado = pagado
+    carrito.entregado = entregado
+    carrito.boleta = boleta
+    carrito.save()  
+    Pedido.objects.filter(id_carrito=id_c).update(pagado=pagado)
+    Pedido.objects.filter(id_carrito=id_c).update(entregado=pagado)
+    Pedido.objects.filter(id_carrito=id_c).update(boleta=boleta)
+
+
+    CarritoBD = Carrito.objects.get(id_carrito=id_c)
+    pedidos = Pedido.objects.select_related().all().filter(id_carrito=id_c)
+
+    updateOK = "1"
+
+
+    return render(request, 'admin/form_buscar_pedidos.html',{'updateOK':updateOK,'id_carrito':id_c,'pedidos':pedidos,'CarritoBD':CarritoBD,'CarritoError':CarritoError})
 
 def form_reportevtas(request, dia): 
     
@@ -352,7 +392,7 @@ def form_reportevtas(request, dia):
     
     pedidos1=[]
     with connection.cursor() as cursor:
-        cursor.execute("Select id_carrito, boleta, cantidad, precio, pagado, entregado from dressyoursalad_carrito where pagado = 1  and trunc(fecha_ped) = TO_DATE('"+ diaX +"','DD/MM/YYYY') ")
+        cursor.execute("Select id_carrito, boleta, cantidad, precio, pagado, entregado from dressyoursalad_carrito where pagado = 1  and trunc(fecha_ped) = TO_DATE('"+ diaX +"','DD/MM/YYYY')  order by id_carrito asc")
         cursor6 = cursor.fetchall()
         for row6 in cursor6:
             pedidos1.append(list(row6))
