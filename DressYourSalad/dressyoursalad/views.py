@@ -210,6 +210,9 @@ def form_pedido(request):
                         carrito5 = Carrito.objects.get(id_carrito=IdCarritoActivo)
                         carrito5.precio = carrito5.precio + PrecioCarrito
                         carrito5.cantidad = carrito5.cantidad + CantidadCarrito
+                        carrito5.fecha_ped = datetime.today()
+                        #.strftime('%d-%m-%Y')
+                        
                     else:
                         carrito5 = Carrito(id_carrito=IdCarritoActivo, precio = PrecioCarrito, cantidad=CantidadCarrito,  user_id=user.id)
 
@@ -279,7 +282,16 @@ def form_ver_pedidos(request, boleta, id_carrito):
             Pedido.objects.filter(id_carrito=id_carrito).update(boleta=boleta)
     
 
-    pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
+    #pedidos = Carrito.objects.select_related().all().order_by('-id_carrito').filter(pagado=False)
+
+    pedidos1=[]
+    with connection.cursor() as cursor:
+        cursor.execute("select dressyoursalad_carrito.id_carrito, dressyoursalad_carrito.boleta, dressyoursalad_carrito.fecha_ped, dressyoursalad_carrito.cantidad, dressyoursalad_carrito.precio from dressyoursalad_pedido, dressyoursalad_carrito where dressyoursalad_pedido.id_carrito = dressyoursalad_carrito.id_carrito and dressyoursalad_pedido.reservado = 1 and dressyoursalad_carrito.pagado = 0 group by dressyoursalad_carrito.id_carrito, dressyoursalad_carrito.boleta, dressyoursalad_carrito.fecha_ped, dressyoursalad_carrito.cantidad, dressyoursalad_carrito.precio ")
+        cursor6 = cursor.fetchall()
+        for row6 in cursor6:
+            pedidos1.append(list(row6))
+    pedidos = list(pedidos1) 
+
     return render(request, 'admin/form_ver_pedidos.html', {'pedidos':pedidos})
 
 def form_ver_pagados(request):
@@ -354,7 +366,7 @@ def form_update_pedido(request, id_c,boleta,pagado,entregado):
     carrito.boleta = boleta
     carrito.save()  
     Pedido.objects.filter(id_carrito=id_c).update(pagado=pagado)
-    Pedido.objects.filter(id_carrito=id_c).update(entregado=pagado)
+    Pedido.objects.filter(id_carrito=id_c).update(entregado=entregado)
     Pedido.objects.filter(id_carrito=id_c).update(boleta=boleta)
 
 
@@ -405,6 +417,9 @@ def form_reportevtas(request, dia):
         for row7 in cursor7:
             Total.append(list(row7))
     TotalDia = list(Total)  
+    TotalDiaX = TotalDia[0][0]
+    if(TotalDia[0][0]  is None):
+         TotalDiaX=0
 
-    return render(request, 'admin/form_reportevtas.html', {'TotalDia':TotalDia, 'pedidos':pedidos2, 'FechaVtas':FechaVtas, 'dia':diaX})
+    return render(request, 'admin/form_reportevtas.html', {'TotalDia':TotalDiaX, 'pedidos':pedidos2, 'FechaVtas':FechaVtas, 'dia':diaX})
 

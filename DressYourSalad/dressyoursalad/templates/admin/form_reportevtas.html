@@ -36,7 +36,7 @@ function ReporteVentas(dia){
           </li>          
           
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a>
+          <a class="nav-link" href="{% url 'dashboard' %}">Gráficos</a>
         </li> 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
@@ -66,6 +66,7 @@ function ReporteVentas(dia){
     <div class="galeria">
         <h3>Reporte de Ventas Día: 
       <select name="dia" id="dia" onChange="ReporteVentas(this.value)">
+        <option>Seleccione...</option>
         {%for fecha in FechaVtas%}
         <option value="{{fecha}}"
         {% if fecha == dia %}
@@ -82,7 +83,9 @@ function ReporteVentas(dia){
     <div class="container">
       <table border="0" class="table">
         <tr>
-          <td><h3 style="text-align:left" >Total Ventas del Día: ${{TotalDia.0.0}}</h3></td>
+          <td><h3 style="text-align:left" >Total Ventas del Día: 
+            ${{TotalDia}}
+          </h3></td>
           <td><img src="/static/img/print.png" onclick="window.print()" style="cursor:pointer" width="30px"  title="Imprimir"></td>
         </tr>
       </table> 
@@ -133,15 +136,6 @@ function ReporteVentas(dia){
       </table>
     
     </div>
-
-
-   
-      
-
-
-
-
-  
 
 
 

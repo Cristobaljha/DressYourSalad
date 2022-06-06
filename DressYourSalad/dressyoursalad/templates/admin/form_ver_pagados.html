@@ -30,7 +30,7 @@
           </li>          
           
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a>
+          <a class="nav-link" href="{% url 'dashboard' %}">Gráficos</a>
         </li> 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
@@ -71,7 +71,8 @@
                 <th scope="col">Total Pagado</th>
                 <th scope="col">Estado de Pago</th>
                 <th scope="col">Estado de Entrega</th>
-                
+                <th scope="col">Ver Pedido</th>
+                 
             </tr>
         </thead>
         <tbody>
@@ -91,20 +92,15 @@
                       {% endif %}
                     </td>
                     <td>
-
-                                  
-                  
-
                       {% if pedido.entregado %}
                         <a href="{% url 'form_noentregado' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Entregado</a>
                       {% else %}
                         <a href="{% url 'form_entregado' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Entregar</a>
                       {% endif %}
-
-                   
-
                     </td>
-                    
+                    <td>
+                        <a href="{% url 'form_buscar_pedidos' pedido.id_carrito%}" class="btn btn-primary" id="btnprueba">Ver</a>
+                    </td>
                 </tr>
             {%endfor%}
         </tbody>        

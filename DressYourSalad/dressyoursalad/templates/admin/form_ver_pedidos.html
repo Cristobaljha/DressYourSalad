@@ -43,7 +43,7 @@
           </li>          
          
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">DashBoard</a>
+          <a class="nav-link" href="{% url 'dashboard' %}">Gráficos</a>
         </li> 
         <li class="nav-item">
           <a class="nav-link" href="{% url 'form_ver' %}">Mantenedor Bowl</a>
@@ -89,12 +89,12 @@
         <tbody>
             {%for pedido in pedidos%}
                 <tr>
-                    <td>{{pedido.id_carrito}}</td>
-                    <td><input type="number" placeholder="Ingrese Boleta" value="{{pedido.boleta}}" name="boleta_{{pedido.id_carrito}}" id="boleta_{{pedido.id_carrito}}" size="5" maxlength="25" required></td>
-                    <td>{{pedido.fecha_ped}}</td>
-                    <td>{{pedido.cantidad}}</td> 
-                    <td>${{pedido.precio}}</td>
-                    <td><input type="button" onclick="IngresaBoleta('{{pedido.id_carrito}}')" class="btn btn-primary" id="btnprueba" value="Pagar"></td>
+                    <td>{{pedido.0}}</td>
+                    <td><input type="number" placeholder="Ingrese Boleta" value="{{pedido.1}}" name="boleta_{{pedido.0}}" id="boleta_{{pedido.0}}" size="5" maxlength="25" required></td>
+                    <td>{{pedido.2}}</td>
+                    <td>{{pedido.3}}</td> 
+                    <td>${{pedido.4}}</td>
+                    <td><input type="button" onclick="IngresaBoleta('{{pedido.0}}')" class="btn btn-primary" id="btnprueba" value="Pagar"></td>
                   </tr>
             {%endfor%}
         </tbody>        
