@@ -41,7 +41,7 @@
 </script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top ">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
         <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#opciones">
         <span class="navbar-toggler-icon"></span>
         </button>      
@@ -73,42 +73,50 @@
     </nav>      
     <br><br><br><br>
     <div class="galeria">
-        <h3>Realiza tu Pedido</h3>
+      <h3>Realiza tu Pedido</h3>
       <div class="linea"></div>
+      <br>
 
-      <br>
-    <div class="container_prod">   
-      <br>
-      <div class="row_prod"> 
-        {%for bo in bowls2%}      
-        <div class="col_prod"> 
-          <table align="center" border="1" style="width:100%"> 
+    <div class="container-lg"  style="border: 0px solid yellow ;" >   
+    <br>
+      <div class="row"  style="border: 0px solid green ;"> 
+        {%for bo in bowls2%}         
+        <div class="col-md" style="width:80%;border: 0px solid gray ; position: relative;padding: 20px;"> 
+          <table align="left" border="0" width="100%"> 
             <tr>
               <td><img class="card-img-top" src="static/img/{{bo.estado_stock}}" style="width: 350px;"></td>
               <td>&nbsp;</td>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td>
-                <h2>{{bo.cod_Bowl}} / {{bo.nom_Bowl}} / ${{bo.precio_Bowl}} </h2>
-                  <form method="POST" action="#" id="formulario">
+              <td align="left" width="70%" style="text-align: left">
+                <h2>
+                  {% if bo.cant_Bowl == 0 %} 
+                  <h4 style="color: gray;text-align: left;">
+                  {% endif %}
+                  {{bo.nom_Bowl}} / ${{bo.precio_Bowl}} 
+                  {% if bo.cant_Bowl == 0 %} 
+                   </h4>
+                  {% endif %}
+                </h2>
+                                  <form method="POST" action="#" id="formulario">
                     {%csrf_token%}
                     <input type="hidden" id="bowl" name="bowl" value="{{bo.cod_Bowl}}">
                     <input type="hidden" id="precio" name="precio"  class="form-control" value=" {{bo.precio_Bowl}}">
                     <input type="hidden" id="id_carrito" name="id_carrito"  class="form-control" value="{{IdCarrito}}">
                     {% if bo.cant_Bowl == 0 %}       
-                     <h4>Producto No Disponible       </h4>
+                     <h4 style="color: gray;text-align: left;">Producto No Disponible       </h4>
                      {% else %}
                         {% if error %}
                             {% if Id_Bowl == bo.cod_Bowl%}
-                            <span style="color:red" >Cantidad ingresada supera al stock : {{bo.cant_Bowl}}! </span>
+                            <span style="color:red;text-align: left" >Cantidad ingresada supera al stock : {{bo.cant_Bowl}}! </span>
                             {% endif %}
                         {% endif %}
                         {% if error2 %}
                             {% if Id_Bowl == bo.cod_Bowl%}
-                            <span style="color:red">Cantidad ingresada debe ser mayor a 0!</span>     
+                            <span style="color:red;text-align: left">Cantidad ingresada debe ser mayor a 0!</span>     
                             {% endif %}
                         {% endif %}
-                      <input type="number" placeholder="Ingrese Cantidad" name="cantidad" id="cantidad" size="5" maxlength="25" required>
-                      <input type="submit" class="btn btn-danger" id="btnprueba" value="Agregar al Carrito">
+                     <br> <input type="number" placeholder="Ingrese Cantidad" name="cantidad" id="cantidad" size="5" maxlength="25" required>
+                      <br><input type="submit" class="btn btn-danger" id="btnprueba" value="Agregar al Carrito">
                     {% endif %}
                     <br>Stock Disponible: {{bo.cant_Bowl}}
                     <br>Receta: {{bo.descripcion_Bowl}}
@@ -118,22 +126,29 @@
             <tr><td>&nbsp;</td></tr>
           </table>
           <br>
-          
-            </div> 
+          </div> 
             {%endfor%}                
       </div>
     </div>
+          
+    
+
  </div>
- <br><br><br><br>
-<footer class="pie-pagina">
+
+ <!-- footer -->    
+
+ <footer class="pie-pagina">
   <div class="grupo-1">
-      <div class="box">                
-        <img src="{% static 'img/nombreEmpresa.jpeg'%}" id="borde"     width="100px" height="100px">
-      </div>
+      
       <div class="box">
           <h2 class="relleno">SOBRE NOSOTROS</h2>
           <p class="textojustificado">Nuestra misión es promover una cultura de la comida saludable y ofrecer a nuestros clientes un servicio de calidad.</p>
       </div>
+      <div class="box">
+        <h2 class="relleno">HORARIO DE ATENCIÓN</h2>
+        <p class="textojustificado">Lunes a viernes 12:00 - 18:00 hrs</p>
+        <p class="textojustificado">Sábados 12:00 - 15:00 hrs</p>
+    </div>
       <div class="box">
           <h2 class="relleno">SIGUENOS</h2>
           <br>
@@ -146,10 +161,10 @@
           </div>
       </div>
   </div>
-  <div class="grupo-2">
-      <small class="relleno">&copy; 2022 <b>DressYourSalad</b> -  Cristobal Jiménez - Nancy Torres - Danko Zamarin | Derechos reservados</small>
-  </div>
+  
 </footer>
+ 
+ 
       
           <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

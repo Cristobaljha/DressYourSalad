@@ -92,7 +92,7 @@ def form_ver(request):
     try:
         user = User.objects.get(username=request.user)
         if user.is_superuser:
-            bowls = Bowl.objects.all()
+            bowls = Bowl.objects.all().order_by('cod_Bowl')  
             #bowls = Pedido.objects.select_related().all()
             return render(request, 'admin/form_ver.html', {'bowls':bowls})
         else:
@@ -176,7 +176,7 @@ def form_pedido(request):
             
             if ped_form.is_valid():
                 bowl = Bowl.objects.get(cod_Bowl=ped_form['bowl'].value())
-                bowls2 = Bowl.objects.select_related().all() 
+                bowls2 = Bowl.objects.select_related().all().order_by('cod_Bowl')
                 if int(ped_form['cantidad'].value()) <= 0:
                     ped_form=PedidoForm()
                     user = User.objects.get(username=request.user)
@@ -224,7 +224,7 @@ def form_pedido(request):
 
             try:
                 
-                bowls2 = Bowl.objects.select_related().all()             
+                bowls2 = Bowl.objects.select_related().all().order_by('cod_Bowl')            
                 if not user.is_superuser:
                     return render(request, 'pedido/form_pedido.html', {'bowls2':bowls2 ,'ped_form':ped_form, 'user':user,  'error':False, 'IdCarrito':IdCarritoActivo, 'Id_Bowl':0, 'items_carrito':items_carrito, 'user_id':user.id, 'nombre_user': user.username})
                 else:

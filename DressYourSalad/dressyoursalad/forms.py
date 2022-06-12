@@ -16,7 +16,7 @@ class BowlForm(forms.ModelForm):
             'nom_Bowl': 'Nombre', 
             'precio_Bowl': 'Precio', 
             'descripcion_Bowl': 'Descripcion',
-            'cant_Bowl': 'Cantidad',
+            'cant_Bowl': 'Cantidad Inicial',
             'estado_stock': 'Imagen',
         }
         widgets={
